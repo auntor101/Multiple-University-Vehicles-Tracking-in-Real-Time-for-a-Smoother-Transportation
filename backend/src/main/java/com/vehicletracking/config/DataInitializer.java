@@ -3,19 +3,18 @@ package com.vehicletracking.config;
 import com.vehicletracking.model.*;
 import com.vehicletracking.repository.UserRepository;
 import com.vehicletracking.repository.VehicleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Component
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer {
     
     private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
     
@@ -28,15 +27,6 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    @Override
-    public void run(String... args) throws Exception {
-        // Only initialize if database is empty
-        if (userRepository.count() == 0) {
-            initializeUsers();
-            initializeVehicles();
-        }
-    }
-    
     @PostConstruct
     public void initializeData() {
         if (userRepository.count() == 0) {
@@ -48,9 +38,8 @@ public class DataInitializer implements CommandLineRunner {
     }
     
     private void createUsers() {
-        logger.info("Initializing demo users with production-ready data...");
+        logger.info("Initializing demo users...");
         
-        // Create Admin User - Based on real university admin profile
         User admin = new User();
         admin.setUsername("admin");
         admin.setEmail("admin@university.edu");
@@ -64,7 +53,6 @@ public class DataInitializer implements CommandLineRunner {
         admin.setIsEmailVerified(true);
         userRepository.save(admin);
         
-        // Create Driver Users - Based on real driver profiles
         User driver1 = new User();
         driver1.setUsername("driver1");
         driver1.setEmail("driver1@university.edu");
@@ -93,7 +81,6 @@ public class DataInitializer implements CommandLineRunner {
         driver2.setIsEmailVerified(true);
         userRepository.save(driver2);
         
-        // Create Student User - Based on real student profile
         User student = new User();
         student.setUsername("student1");
         student.setEmail("student1@university.edu");
@@ -109,7 +96,6 @@ public class DataInitializer implements CommandLineRunner {
         student.setIsEmailVerified(true);
         userRepository.save(student);
         
-        // Create Teacher User - Based on real faculty profile
         User teacher = new User();
         teacher.setUsername("teacher1");
         teacher.setEmail("teacher1@university.edu");
@@ -125,7 +111,6 @@ public class DataInitializer implements CommandLineRunner {
         teacher.setIsEmailVerified(true);
         userRepository.save(teacher);
         
-        // Create Office Admin User - Based on real office admin profile
         User officeAdmin = new User();
         officeAdmin.setUsername("office_admin");
         officeAdmin.setEmail("office_admin@university.edu");
@@ -145,11 +130,10 @@ public class DataInitializer implements CommandLineRunner {
     }
     
     private void createVehicles() {
-        logger.info("Initializing demo vehicles with real-world specifications...");
+        logger.info("Initializing demo vehicles...");
         
         List<User> drivers = userRepository.findByRole(Role.DRIVER);
         
-        // Student Bus 1 - Metropolitan University Campus Route
         Vehicle studentBus1 = new Vehicle();
         studentBus1.setVehicleNumber("STU-001");
         studentBus1.setModel("Blue Bird Vision");
@@ -163,17 +147,15 @@ public class DataInitializer implements CommandLineRunner {
         if (!drivers.isEmpty()) {
             studentBus1.setDriver(drivers.get(0));
         }
-        // Real GPS coordinates: Central Park, New York
         studentBus1.setCurrentLatitude(40.7829);
         studentBus1.setCurrentLongitude(-73.9654);
-        studentBus1.setCurrentSpeed(15.0); // km/h - realistic campus speed
+        studentBus1.setCurrentSpeed(15.0);
         studentBus1.setDirection("Northeast");
         studentBus1.setFuelLevel(78.0);
         studentBus1.setLastLocationUpdate(LocalDateTime.now().minusMinutes(2));
         studentBus1.setIsActive(true);
         vehicleRepository.save(studentBus1);
         
-        // Teacher Vehicle - Faculty Shuttle
         Vehicle teacherVehicle = new Vehicle();
         teacherVehicle.setVehicleNumber("TCH-001");
         teacherVehicle.setModel("Ford Transit 350");
@@ -187,17 +169,15 @@ public class DataInitializer implements CommandLineRunner {
         if (drivers.size() > 1) {
             teacherVehicle.setDriver(drivers.get(1));
         }
-        // Real GPS coordinates: Times Square, New York
         teacherVehicle.setCurrentLatitude(40.7580);
         teacherVehicle.setCurrentLongitude(-73.9855);
-        teacherVehicle.setCurrentSpeed(25.0); // km/h
+        teacherVehicle.setCurrentSpeed(25.0);
         teacherVehicle.setDirection("South");
         teacherVehicle.setFuelLevel(65.0);
         teacherVehicle.setLastLocationUpdate(LocalDateTime.now().minusMinutes(5));
         teacherVehicle.setIsActive(true);
         vehicleRepository.save(teacherVehicle);
         
-        // Office Admin Vehicle
         Vehicle officeVehicle = new Vehicle();
         officeVehicle.setVehicleNumber("OFC-001");
         officeVehicle.setModel("Toyota Hiace");
@@ -208,17 +188,15 @@ public class DataInitializer implements CommandLineRunner {
         officeVehicle.setUniversity("Metropolitan University");
         officeVehicle.setRouteName("Administrative Route");
         officeVehicle.setRouteDescription("Inter-campus administrative travel");
-        // Real GPS coordinates: Brooklyn Bridge, New York
         officeVehicle.setCurrentLatitude(40.7061);
         officeVehicle.setCurrentLongitude(-73.9969);
-        officeVehicle.setCurrentSpeed(0.0); // Parked
+        officeVehicle.setCurrentSpeed(0.0);
         officeVehicle.setDirection("Parked");
         officeVehicle.setFuelLevel(92.0);
         officeVehicle.setLastLocationUpdate(LocalDateTime.now().minusMinutes(15));
         officeVehicle.setIsActive(true);
         vehicleRepository.save(officeVehicle);
         
-        // Additional Student Bus for peak hours
         Vehicle studentBus2 = new Vehicle();
         studentBus2.setVehicleNumber("STU-002");
         studentBus2.setModel("Thomas Built Saf-T-Liner");
@@ -229,17 +207,15 @@ public class DataInitializer implements CommandLineRunner {
         studentBus2.setUniversity("Metropolitan University");
         studentBus2.setRouteName("Campus Express");
         studentBus2.setRouteDescription("Express route during peak hours");
-        // Real GPS coordinates: Empire State Building, New York
         studentBus2.setCurrentLatitude(40.7484);
         studentBus2.setCurrentLongitude(-73.9857);
-        studentBus2.setCurrentSpeed(20.0); // km/h
+        studentBus2.setCurrentSpeed(20.0);
         studentBus2.setDirection("West");
         studentBus2.setFuelLevel(45.0);
         studentBus2.setLastLocationUpdate(LocalDateTime.now().minusMinutes(1));
         studentBus2.setIsActive(true);
         vehicleRepository.save(studentBus2);
         
-        // General Transport Vehicle
         Vehicle generalVehicle = new Vehicle();
         generalVehicle.setVehicleNumber("GEN-001");
         generalVehicle.setModel("Mercedes Sprinter");
@@ -250,16 +226,15 @@ public class DataInitializer implements CommandLineRunner {
         generalVehicle.setUniversity("Metropolitan University");
         generalVehicle.setRouteName("General Purpose");
         generalVehicle.setRouteDescription("Multi-purpose university transport");
-        // Real GPS coordinates: Wall Street, New York
         generalVehicle.setCurrentLatitude(40.7074);
         generalVehicle.setCurrentLongitude(-74.0113);
-        generalVehicle.setCurrentSpeed(0.0); // In maintenance
+        generalVehicle.setCurrentSpeed(0.0);
         generalVehicle.setDirection("Maintenance Bay");
         generalVehicle.setFuelLevel(30.0);
         generalVehicle.setLastLocationUpdate(LocalDateTime.now().minusHours(2));
         generalVehicle.setIsActive(true);
         vehicleRepository.save(generalVehicle);
         
-        logger.info("Demo vehicles created successfully with real-world data");
+        logger.info("Demo vehicles created successfully");
     }
 } 

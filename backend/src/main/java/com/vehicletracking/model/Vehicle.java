@@ -1,11 +1,9 @@
 package com.vehicletracking.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
 import com.vehicletracking.validation.ValidVehicleNumber;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vehicles")
@@ -36,57 +34,56 @@ public class Vehicle {
     private Integer capacity;
     
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(nullable = false, length = 30)
     private VehicleType vehicleType;
     
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private VehicleStatus status = VehicleStatus.ACTIVE;
+    @Column(nullable = false, length = 20)
+    private VehicleStatus status;
     
-    @Size(max = 100)
+    @NotBlank(message = "University is required")
+    @Size(min = 2, max = 100, message = "University name must be between 2 and 100 characters")
+    @Column(nullable = false, length = 100)
     private String university;
     
-    // Driver assignment
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "driver_id")
     private User driver;
     
-    // Current location
+    @Column(name = "current_latitude")
     private Double currentLatitude;
+    
+    @Column(name = "current_longitude")
     private Double currentLongitude;
-    private LocalDateTime lastLocationUpdate;
     
-    // Route information
-    @Size(max = 200)
-    private String routeName;
+    @Column(name = "current_speed")
+    private Double currentSpeed;
     
-    @Size(max = 500)
-    private String routeDescription;
-    
-    @Column(columnDefinition = "TEXT")
-    private String routeStops; // JSON string of stops
-    
-    // Speed and other tracking info
-    private Double currentSpeed; // km/h
+    @Column(name = "direction", length = 50)
     private String direction;
     
-    // Vehicle details
-    @Size(max = 20)
-    private String fuelType;
+    @Column(name = "fuel_level")
+    private Double fuelLevel;
     
-    private Double fuelLevel; // percentage
+    @Column(name = "route_name", length = 100)
+    private String routeName;
     
-    @Size(max = 100)
-    private String insuranceNumber;
+    @Column(name = "route_description", length = 500)
+    private String routeDescription;
     
-    private LocalDateTime insuranceExpiry;
+    @Column(name = "last_location_update")
+    private LocalDateTime lastLocationUpdate;
     
-    private LocalDateTime lastMaintenance;
-    private LocalDateTime nextMaintenance;
+    @Column(name = "last_maintenance_date")
+    private LocalDateTime lastMaintenanceDate;
     
+    @Column(name = "next_maintenance_date")
+    private LocalDateTime nextMaintenanceDate;
+    
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
     
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
     @Column(name = "updated_at")
@@ -101,22 +98,8 @@ public class Vehicle {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
-        lastLocationUpdate = LocalDateTime.now();
     }
     
-    // Constructors
-    public Vehicle() {}
-    
-    public Vehicle(String vehicleNumber, String model, String brand, 
-                   VehicleType vehicleType, String university) {
-        this.vehicleNumber = vehicleNumber;
-        this.model = model;
-        this.brand = brand;
-        this.vehicleType = vehicleType;
-        this.university = university;
-    }
-    
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -205,12 +188,28 @@ public class Vehicle {
         this.currentLongitude = currentLongitude;
     }
     
-    public LocalDateTime getLastLocationUpdate() {
-        return lastLocationUpdate;
+    public Double getCurrentSpeed() {
+        return currentSpeed;
     }
     
-    public void setLastLocationUpdate(LocalDateTime lastLocationUpdate) {
-        this.lastLocationUpdate = lastLocationUpdate;
+    public void setCurrentSpeed(Double currentSpeed) {
+        this.currentSpeed = currentSpeed;
+    }
+    
+    public String getDirection() {
+        return direction;
+    }
+    
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+    
+    public Double getFuelLevel() {
+        return fuelLevel;
+    }
+    
+    public void setFuelLevel(Double fuelLevel) {
+        this.fuelLevel = fuelLevel;
     }
     
     public String getRouteName() {
@@ -229,76 +228,28 @@ public class Vehicle {
         this.routeDescription = routeDescription;
     }
     
-    public String getRouteStops() {
-        return routeStops;
+    public LocalDateTime getLastLocationUpdate() {
+        return lastLocationUpdate;
     }
     
-    public void setRouteStops(String routeStops) {
-        this.routeStops = routeStops;
+    public void setLastLocationUpdate(LocalDateTime lastLocationUpdate) {
+        this.lastLocationUpdate = lastLocationUpdate;
     }
     
-    public Double getCurrentSpeed() {
-        return currentSpeed;
+    public LocalDateTime getLastMaintenanceDate() {
+        return lastMaintenanceDate;
     }
     
-    public void setCurrentSpeed(Double currentSpeed) {
-        this.currentSpeed = currentSpeed;
+    public void setLastMaintenanceDate(LocalDateTime lastMaintenanceDate) {
+        this.lastMaintenanceDate = lastMaintenanceDate;
     }
     
-    public String getDirection() {
-        return direction;
+    public LocalDateTime getNextMaintenanceDate() {
+        return nextMaintenanceDate;
     }
     
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-    
-    public String getFuelType() {
-        return fuelType;
-    }
-    
-    public void setFuelType(String fuelType) {
-        this.fuelType = fuelType;
-    }
-    
-    public Double getFuelLevel() {
-        return fuelLevel;
-    }
-    
-    public void setFuelLevel(Double fuelLevel) {
-        this.fuelLevel = fuelLevel;
-    }
-    
-    public String getInsuranceNumber() {
-        return insuranceNumber;
-    }
-    
-    public void setInsuranceNumber(String insuranceNumber) {
-        this.insuranceNumber = insuranceNumber;
-    }
-    
-    public LocalDateTime getInsuranceExpiry() {
-        return insuranceExpiry;
-    }
-    
-    public void setInsuranceExpiry(LocalDateTime insuranceExpiry) {
-        this.insuranceExpiry = insuranceExpiry;
-    }
-    
-    public LocalDateTime getLastMaintenance() {
-        return lastMaintenance;
-    }
-    
-    public void setLastMaintenance(LocalDateTime lastMaintenance) {
-        this.lastMaintenance = lastMaintenance;
-    }
-    
-    public LocalDateTime getNextMaintenance() {
-        return nextMaintenance;
-    }
-    
-    public void setNextMaintenance(LocalDateTime nextMaintenance) {
-        this.nextMaintenance = nextMaintenance;
+    public void setNextMaintenanceDate(LocalDateTime nextMaintenanceDate) {
+        this.nextMaintenanceDate = nextMaintenanceDate;
     }
     
     public Boolean getIsActive() {

@@ -1,13 +1,9 @@
 package com.vehicletracking.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.Set;
 import com.vehicletracking.config.SecurityConstants;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -54,29 +50,39 @@ public class User {
     private String phoneNumber;
     
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(nullable = false, length = 20)
     private Role role;
     
-    @Size(max = 100)
+    @Size(max = 100, message = "University name must not exceed 100 characters")
+    @Column(length = 100)
     private String university;
     
-    @Size(max = 100)
+    @Size(max = 100, message = "Department name must not exceed 100 characters")
+    @Column(length = 100)
     private String department;
     
-    @Size(max = 20)
-    private String studentId; // For students
+    @Size(max = 50, message = "Student ID must not exceed 50 characters")
+    @Column(length = 50, unique = true)
+    private String studentId;
     
-    @Size(max = 20)
-    private String employeeId; // For teachers, office admin
+    @Size(max = 50, message = "Employee ID must not exceed 50 characters")
+    @Column(length = 50, unique = true)
+    private String employeeId;
     
-    @Size(max = 20)
-    private String licenseNumber; // For drivers
+    @Size(max = 50, message = "License number must not exceed 50 characters")
+    @Column(length = 50, unique = true)
+    private String licenseNumber;
     
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
     
+    @Column(name = "is_email_verified", nullable = false)
     private Boolean isEmailVerified = false;
     
-    @Column(name = "created_at")
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+    
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
     @Column(name = "updated_at")
@@ -93,21 +99,10 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
     
-    // Constructors
-    public User() {}
-    
-    public User(String username, String email, String password, String firstName, 
-                String lastName, Role role, String university) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-        this.university = university;
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
     
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -228,6 +223,14 @@ public class User {
         this.isEmailVerified = isEmailVerified;
     }
     
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+    
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+    
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -242,9 +245,5 @@ public class User {
     
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-    
-    public String getFullName() {
-        return firstName + " " + lastName;
     }
 } 
