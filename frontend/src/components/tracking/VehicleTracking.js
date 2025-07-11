@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -59,6 +59,16 @@ const VehicleTracking = () => {
     const interval = setInterval(fetchVehicles, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  // Optimize re-renders by memoizing calculations
+  const vehicleStats = useMemo(() => ({
+    total: vehicles.length,
+    active: vehicles.filter(v => v.status === 'ACTIVE').length,
+    moving: vehicles.filter(v => v.currentSpeed > 0).length,
+    avgFuel: vehicles.length > 0 
+      ? Math.round(vehicles.reduce((sum, v) => sum + (v.fuelLevel || 0), 0) / vehicles.length)
+      : 0
+  }), [vehicles]);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -142,7 +152,7 @@ const VehicleTracking = () => {
               <CardContent sx={{ textAlign: 'center' }}>
                 <DirectionsBus color="primary" sx={{ fontSize: 40, mb: 1 }} />
                 <Typography variant="h4" component="div">
-                  {vehicles.length}
+                  {vehicleStats.total}
                 </Typography>
                 <Typography color="textSecondary">
                   Tracked Vehicles
@@ -156,7 +166,7 @@ const VehicleTracking = () => {
               <CardContent sx={{ textAlign: 'center' }}>
                 <LocationOn color="success" sx={{ fontSize: 40, mb: 1 }} />
                 <Typography variant="h4" component="div">
-                  {vehicles.filter(v => v.status === 'ACTIVE').length}
+                  {vehicleStats.active}
                 </Typography>
                 <Typography color="textSecondary">
                   Active Vehicles
@@ -170,7 +180,7 @@ const VehicleTracking = () => {
               <CardContent sx={{ textAlign: 'center' }}>
                 <Speed color="warning" sx={{ fontSize: 40, mb: 1 }} />
                 <Typography variant="h4" component="div">
-                  {vehicles.filter(v => v.currentSpeed > 0).length}
+                  {vehicleStats.moving}
                 </Typography>
                 <Typography color="textSecondary">
                   Moving Vehicles
@@ -184,7 +194,7 @@ const VehicleTracking = () => {
               <CardContent sx={{ textAlign: 'center' }}>
                 <LocalGasStation color="info" sx={{ fontSize: 40, mb: 1 }} />
                 <Typography variant="h4" component="div">
-                  {Math.round(vehicles.reduce((sum, v) => sum + (v.fuelLevel || 0), 0) / vehicles.length)}%
+                  {vehicleStats.avgFuel}%
                 </Typography>
                 <Typography color="textSecondary">
                   Avg Fuel Level

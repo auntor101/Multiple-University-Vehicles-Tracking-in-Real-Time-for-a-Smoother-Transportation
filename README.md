@@ -1,229 +1,218 @@
 # University Vehicle Tracking System
 
-A real-time vehicle tracking system for universities to manage and monitor their vehicle fleets.
+A modern, **Firebase-powered** real-time vehicle tracking platform for university fleets with live updates, push notifications, and comprehensive management capabilities.
 
-## Overview
+## ✨ Features
 
-The University Vehicle Tracking System is a web application that provides real-time tracking and management of university vehicle fleets. The system supports multiple user roles with specific permissions and functionalities.
+- **🔥 Firebase Realtime Database** - Instant data synchronization across all devices
+- **📱 Push Notifications** - Firebase Cloud Messaging for alerts and updates
+- **🔐 Firebase Authentication** - Secure user management with multiple providers
+- **📸 Firebase Storage** - Vehicle images and document management
+- **⚡ Real-time Tracking** - Live GPS location updates with instant dashboard refresh
+- **👥 Multi-role Access** - Admin, Driver, Student, Teacher, and Office Admin roles
+- **🚗 Fleet Management** - Vehicle assignment, status monitoring, and maintenance tracking
+- **📱 Responsive UI** - Modern Material-UI interface with mobile-first design
 
-## Features
-
-- Real-time vehicle location tracking with GPS coordinates
-- Multi-role user authentication (Administrator, Driver, Student, Teacher, Office Admin)
-- Vehicle fleet management
-- Driver assignment and management
-- Live dashboard with auto-refresh capabilities
-- Route monitoring and fuel level tracking
-
-## Technology Stack
+## 🛠 Tech Stack
 
 **Backend**
-- Spring Boot 3.2
-- Java 17
-- Spring Security with JWT
-- H2 Database
-- Spring Data JPA
-- Maven
+- Spring Boot 3.2 + Java 17
+- **Firebase Realtime Database** - Primary data storage
+- **Firebase Authentication** - User management & security
+- **Firebase Cloud Messaging** - Push notifications
+- **Firebase Storage** - File and image storage
+- Spring Security + JWT (for API endpoints)
+- WebSocket + Firebase listeners for real-time updates
 
 **Frontend**
-- React 18
-- Material-UI (MUI)
-- React Router
-- Axios
+- React 18 + Material-UI
+- **Firebase SDK** - Direct database connection for real-time updates
+- Firebase Authentication integration
+- Real-time dashboard with instant updates
+- Push notification support
+- Responsive design
 
-## System Requirements
+## 📋 Prerequisites
 
-- Java 17 or higher
-- Node.js 16 or higher
-- Maven 3.6 or higher
-- npm 8 or higher
+- **Java 17+**
+- **Node.js 16+**
+- **Maven 3.6+**
+- **Firebase Project** - [Create at Firebase Console](https://console.firebase.google.com)
 
-## Installation
+## 🚀 Quick Start
 
-### Clone Repository
+### 1. Firebase Setup
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com)
+2. Enable **Authentication**, **Realtime Database**, **Cloud Messaging**, and **Storage**
+3. Download `firebase-service-account.json` for backend
+4. Get Firebase config object for frontend
+
+### 2. Clone Repository
 ```bash
 git clone https://github.com/auntor101/Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation.git
 cd Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation
 ```
 
-### Install Maven
-
-**Windows:**
-1. Download Maven from https://maven.apache.org/download.cgi
-2. Extract to `C:\Program Files\Apache\maven`
-3. Add `C:\Program Files\Apache\maven\bin` to PATH environment variable
-4. Verify: `mvn -version`
-
-**macOS:**
-```bash
-brew install maven
-```
-
-**Ubuntu/Debian:**
-```bash
-sudo apt update
-sudo apt install maven
-```
-
-### Backend Setup
-
-1. Navigate to backend directory:
+### 3. Backend Setup
 ```bash
 cd backend
-```
-
-2. Install dependencies:
-```bash
+# Place firebase-service-account.json in src/main/resources/
 mvn clean install
-```
-
-### Frontend Setup
-
-1. Navigate to frontend directory:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-## Running the Application
-
-### Start Backend Server
-
-**Using scripts:**
-```bash
-# Windows
-cd backend
-run.bat
-
-# Linux/macOS
-cd backend
-chmod +x run.sh
-./run.sh
-```
-
-**Using Maven:**
-```bash
-cd backend
 mvn spring-boot:run
 ```
+Backend runs on `http://localhost:8080`
 
-Backend runs on: `http://localhost:8080`
-
-### Start Frontend Application
-
-**Using scripts:**
-```bash
-# Windows
-cd frontend
-run.bat
-
-# Linux/macOS
-cd frontend
-chmod +x run.sh
-./run.sh
-```
-
-**Using npm:**
+### 4. Frontend Setup
 ```bash
 cd frontend
+npm install
+# Update src/firebase/config.js with your Firebase config
 npm start
 ```
+Frontend runs on `http://localhost:3000`
 
-Frontend runs on: `http://localhost:3000`
-
-## User Accounts
+## 🔐 Demo Accounts
 
 | Role | Email | Password |
 |------|-------|----------|
-| Administrator | admin@university.edu | SecureAdmin@123 |
-| Driver 1 | driver1@university.edu | SecureDriver@123 |
-| Driver 2 | driver2@university.edu | SecureDriver@124 |
-| Student | student1@university.edu | SecureStudent@123 |
-| Teacher | teacher1@university.edu | SecureTeacher@123 |
-| Office Admin | office_admin@university.edu | SecureOffice@123 |
+| **Admin** | admin@university.edu | SecureAdmin@123 |
+| **Driver** | driver1@university.edu | SecureDriver@123 |
+| **Student** | student1@university.edu | SecureStudent@123 |
 
-## API Endpoints
+## 📡 API Endpoints
 
 **Base URL:** `http://localhost:8080/api`
 
-### Authentication
-- `POST /auth/signin` - User login
-- `POST /auth/signup` - User registration
-- `GET /auth/me` - Get current user info
+### Core Endpoints
+- `POST /auth/signin` - User authentication
+- `GET /vehicles` - List all vehicles (Firebase proxy)
+- `GET /tracking/vehicles` - Get vehicles with live location
+- `POST /tracking/my-vehicle/location` - Update driver location
+- `POST /notifications/send` - Send push notifications
 
-### Vehicle Management
-- `GET /vehicles` - List all vehicles
-- `POST /vehicles` - Create vehicle
-- `PUT /vehicles/{id}` - Update vehicle
-- `DELETE /vehicles/{id}` - Delete vehicle
+## 🔥 Firebase Features
 
-### Location Tracking
-- `GET /tracking/vehicles` - Get vehicles with location
-- `POST /tracking/location/{vehicleId}` - Update vehicle location
-- `POST /tracking/my-vehicle/location` - Update driver's vehicle location
+### **Realtime Database Structure**
+```json
+{
+  "users": {
+    "userId": {
+      "email": "user@university.edu",
+      "role": "DRIVER",
+      "profile": { ... },
+      "isActive": true
+    }
+  },
+  "vehicles": {
+    "vehicleId": {
+      "vehicleNumber": "UN-001",
+      "location": {
+        "latitude": 23.8103,
+        "longitude": 90.4125,
+        "timestamp": 1234567890
+      },
+      "status": "ACTIVE",
+      "driver": "driverId"
+    }
+  },
+  "notifications": {
+    "notificationId": {
+      "title": "Vehicle Update",
+      "message": "Vehicle UN-001 arrived",
+      "timestamp": 1234567890
+    }
+  }
+}
+```
 
-### User Management
-- `GET /users` - List users
-- `GET /users/stats` - User statistics
+### **Real-time Features**
+- 🔄 **Live Location Updates** - Vehicles update every 5 seconds
+- 📱 **Instant Notifications** - Push alerts for status changes
+- 👥 **Multi-device Sync** - Changes appear immediately on all devices
+- 🚨 **Emergency Alerts** - Real-time emergency broadcasting
 
-## Project Structure
+## 🔧 Configuration
+
+### Environment Variables
+```bash
+# Firebase Configuration
+export FIREBASE_PROJECT_ID="your-project-id"
+export FIREBASE_PRIVATE_KEY="your-private-key"
+export FIREBASE_CLIENT_EMAIL="your-client-email"
+export FIREBASE_DATABASE_URL="https://your-project.firebaseio.com"
+export FIREBASE_STORAGE_BUCKET="your-project.appspot.com"
+
+# JWT for API authentication
+export JWT_SECRET="your-secure-jwt-secret"
+```
+
+### Firebase Security Rules
+```javascript
+// Realtime Database Rules
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'ADMIN'",
+        ".write": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'ADMIN'"
+      }
+    },
+    "vehicles": {
+      ".read": "auth != null",
+      ".write": "root.child('users').child(auth.uid).child('role').val() === 'ADMIN' || root.child('users').child(auth.uid).child('role').val() === 'DRIVER'"
+    }
+  }
+}
+```
+
+## 🏗 Project Structure
 
 ```
-├── backend/                    # Spring Boot application
-│   ├── src/main/java/         # Application source code
-│   ├── src/main/resources/    # Configuration files
-│   ├── pom.xml               # Maven configuration
-│   ├── run.bat               # Windows startup script
-│   └── run.sh                # Unix startup script
-├── frontend/                  # React application
-│   ├── src/                  # React source code
-│   ├── public/               # Static assets
-│   ├── package.json          # npm dependencies
-│   ├── run.bat               # Windows startup script
-│   └── run.sh                # Unix startup script
-└── README.md                 # This file
+├── backend/          # Spring Boot + Firebase
+│   ├── src/main/java/
+│   │   ├── config/FirebaseConfig.java
+│   │   ├── service/FirebaseService.java
+│   │   └── service/NotificationService.java
+│   ├── src/main/resources/
+│   │   └── firebase-service-account.json
+│   └── pom.xml
+├── frontend/         # React + Firebase SDK
+│   ├── src/
+│   │   ├── firebase/config.js
+│   │   ├── hooks/useFirebase.js
+│   │   └── components/
+│   └── package.json
+└── README.md
 ```
 
-## Configuration
-
-The application uses default configurations suitable for local development:
-
-- **Database**: H2 in-memory database
-- **Backend Port**: 8080
-- **Frontend Port**: 3000
-- **Authentication**: JWT tokens
-- **CORS**: Configured for localhost
-
-## Access Points
+## 🌐 Access Points
 
 - **Application**: http://localhost:3000
-- **API**: http://localhost:8080/api
-- **H2 Console**: http://localhost:8080/api/h2-console
+- **API Documentation**: http://localhost:8080/api
+- **Firebase Console**: https://console.firebase.google.com
 
-## Common Issues
+## 📈 Firebase-Powered Features
 
-**Port already in use:**
-```bash
-# Windows - Kill process on port 8080
-netstat -ano | findstr :8080
-taskkill /PID <process-id> /F
+### For Administrators
+- **Real-time Fleet Dashboard** - Live vehicle monitoring
+- **Push Notifications** - Send alerts to all users
+- **User Management** - Firebase Auth integration
+- **Analytics Dashboard** - Real-time usage statistics
 
-# Linux/macOS - Kill process on port 8080
-lsof -i :8080
-kill -9 <process-id>
-```
+### For Drivers
+- **Live Location Sharing** - Automatic GPS updates
+- **Instant Notifications** - Receive dispatch alerts
+- **Vehicle Status Updates** - Real-time status broadcasting
+- **Emergency Button** - Instant emergency alerts
 
-**Maven not found:**
-- Ensure Maven is installed and added to PATH
-- Restart terminal after installation
+### For Students & Staff
+- **Live Vehicle Tracking** - See exact locations instantly
+- **Push Notifications** - Arrival/departure alerts
+- **Real-time Updates** - No page refresh needed
+- **Offline Support** - Firebase offline capabilities
 
-**npm install fails:**
-```bash
-npm cache clean --force
-rm -rf node_modules
-npm install
-```
+---
+
+**Built with 🔥 Firebase + Spring Boot for real-time university transportation**
+
+

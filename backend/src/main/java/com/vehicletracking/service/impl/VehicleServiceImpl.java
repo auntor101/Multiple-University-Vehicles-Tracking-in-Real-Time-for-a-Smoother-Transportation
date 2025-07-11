@@ -3,6 +3,10 @@ package com.vehicletracking.service.impl;
 import com.vehicletracking.dto.VehicleDto;
 import com.vehicletracking.dto.VehicleResponseDto;
 import com.vehicletracking.dto.LocationUpdateDto;
+import com.vehicletracking.exception.VehicleNotFoundException;
+import com.vehicletracking.exception.UserNotFoundException;
+import com.vehicletracking.exception.DriverAssignmentException;
+import com.vehicletracking.exception.DuplicateVehicleException;
 import com.vehicletracking.model.Vehicle;
 import com.vehicletracking.model.User;
 import com.vehicletracking.model.VehicleType;
@@ -33,7 +37,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto createVehicle(VehicleDto vehicleDto) {
         if (vehicleRepository.existsByVehicleNumber(vehicleDto.getVehicleNumber())) {
-            throw new RuntimeException("Vehicle number already exists: " + vehicleDto.getVehicleNumber());
+            throw DuplicateVehicleException.withNumber(vehicleDto.getVehicleNumber());
         }
         
         Vehicle vehicle = new Vehicle();
@@ -42,15 +46,15 @@ public class VehicleServiceImpl implements VehicleService {
         // Assign driver if provided
         if (vehicleDto.getDriverId() != null) {
             User driver = userRepository.findById(vehicleDto.getDriverId())
-                .orElseThrow(() -> new RuntimeException("Driver not found with id: " + vehicleDto.getDriverId()));
+                .orElseThrow(() -> new UserNotFoundException(vehicleDto.getDriverId()));
             
             if (driver.getRole() != Role.DRIVER) {
-                throw new RuntimeException("User is not a driver");
+                throw DriverAssignmentException.notADriver(vehicleDto.getDriverId());
             }
             
             // Check if driver is already assigned to another vehicle
             if (vehicleRepository.findByDriverId(vehicleDto.getDriverId()).isPresent()) {
-                throw new RuntimeException("Driver is already assigned to another vehicle");
+                throw DriverAssignmentException.alreadyAssigned(vehicleDto.getDriverId());
             }
             
             vehicle.setDriver(driver);
@@ -63,12 +67,12 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto updateVehicle(Long id, VehicleDto vehicleDto) {
         Vehicle vehicle = vehicleRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + id));
+            .orElseThrow(() -> new VehicleNotFoundException(id));
         
         // Check if vehicle number is being changed and if it already exists
         if (!vehicle.getVehicleNumber().equals(vehicleDto.getVehicleNumber()) &&
             vehicleRepository.existsByVehicleNumber(vehicleDto.getVehicleNumber())) {
-            throw new RuntimeException("Vehicle number already exists: " + vehicleDto.getVehicleNumber());
+            throw DuplicateVehicleException.withNumber(vehicleDto.getVehicleNumber());
         }
         
         mapDtoToEntity(vehicleDto, vehicle);
@@ -77,16 +81,16 @@ public class VehicleServiceImpl implements VehicleService {
         if (vehicleDto.getDriverId() != null) {
             if (vehicle.getDriver() == null || !vehicle.getDriver().getId().equals(vehicleDto.getDriverId())) {
                 User driver = userRepository.findById(vehicleDto.getDriverId())
-                    .orElseThrow(() -> new RuntimeException("Driver not found with id: " + vehicleDto.getDriverId()));
+                    .orElseThrow(() -> new UserNotFoundException(vehicleDto.getDriverId()));
                 
                 if (driver.getRole() != Role.DRIVER) {
-                    throw new RuntimeException("User is not a driver");
+                    throw DriverAssignmentException.notADriver(vehicleDto.getDriverId());
                 }
                 
                 // Check if driver is already assigned to another vehicle
                 Optional<Vehicle> existingAssignment = vehicleRepository.findByDriverId(vehicleDto.getDriverId());
                 if (existingAssignment.isPresent() && !existingAssignment.get().getId().equals(id)) {
-                    throw new RuntimeException("Driver is already assigned to another vehicle");
+                    throw DriverAssignmentException.alreadyAssigned(vehicleDto.getDriverId());
                 }
                 
                 vehicle.setDriver(driver);
@@ -102,7 +106,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void deleteVehicle(Long id) {
         Vehicle vehicle = vehicleRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + id));
+            .orElseThrow(() -> new VehicleNotFoundException(id));
         
         vehicle.setIsActive(false);
         vehicleRepository.save(vehicle);
@@ -295,13 +299,9 @@ public class VehicleServiceImpl implements VehicleService {
         entity.setUniversity(dto.getUniversity());
         entity.setRouteName(dto.getRouteName());
         entity.setRouteDescription(dto.getRouteDescription());
-        entity.setRouteStops(dto.getRouteStops());
-        entity.setFuelType(dto.getFuelType());
         entity.setFuelLevel(dto.getFuelLevel());
-        entity.setInsuranceNumber(dto.getInsuranceNumber());
-        entity.setInsuranceExpiry(dto.getInsuranceExpiry());
-        entity.setLastMaintenance(dto.getLastMaintenance());
-        entity.setNextMaintenance(dto.getNextMaintenance());
+        entity.setLastMaintenanceDate(dto.getLastMaintenance());
+        entity.setNextMaintenanceDate(dto.getNextMaintenance());
     }
     
     private VehicleResponseDto mapEntityToResponseDto(Vehicle entity) {
@@ -330,19 +330,15 @@ public class VehicleServiceImpl implements VehicleService {
         // Route information
         dto.setRouteName(entity.getRouteName());
         dto.setRouteDescription(entity.getRouteDescription());
-        dto.setRouteStops(entity.getRouteStops());
         
         // Speed and tracking info
         dto.setCurrentSpeed(entity.getCurrentSpeed());
         dto.setDirection(entity.getDirection());
         
         // Vehicle details
-        dto.setFuelType(entity.getFuelType());
         dto.setFuelLevel(entity.getFuelLevel());
-        dto.setInsuranceNumber(entity.getInsuranceNumber());
-        dto.setInsuranceExpiry(entity.getInsuranceExpiry());
-        dto.setLastMaintenance(entity.getLastMaintenance());
-        dto.setNextMaintenance(entity.getNextMaintenance());
+        dto.setLastMaintenance(entity.getLastMaintenanceDate());
+        dto.setNextMaintenance(entity.getNextMaintenanceDate());
         
         // Status
         dto.setIsActive(entity.getIsActive());

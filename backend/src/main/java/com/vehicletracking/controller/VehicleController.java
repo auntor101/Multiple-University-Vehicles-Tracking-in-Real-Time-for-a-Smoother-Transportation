@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = {"${app.cors.allowed-origins}"}, maxAge = 3600)
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
