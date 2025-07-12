@@ -1,21 +1,20 @@
 // Firebase Configuration for Vehicle Tracking System
 import { initializeApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
-import { getDatabase, connectDatabaseEmulator } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
-import { getStorage, connectStorageEmulator } from 'firebase/storage';
+import { getStorage } from 'firebase/storage';
 
 // Firebase configuration object
-// Replace with your Firebase project configuration
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "your-api-key",
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "vehicle-tracking-dev.firebaseapp.com",
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL || "https://vehicle-tracking-dev-default-rtdb.firebaseio.com",
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "vehicle-tracking-dev",
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "vehicle-tracking-dev.appspot.com",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "123456789",
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-XXXXXXXXXX"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
@@ -41,26 +40,8 @@ export { messaging };
 // Initialize Firebase Storage
 export const storage = getStorage(app);
 
-// Connect to emulators in development (only if available)
-if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_USE_FIREBASE_EMULATOR === 'true') {
-  try {
-    // Connect to Auth emulator
-    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-    
-    // Connect to Database emulator
-    connectDatabaseEmulator(database, 'localhost', 9000);
-    
-    // Connect to Storage emulator  
-    connectStorageEmulator(storage, 'localhost', 9199);
-    
-    console.log('Connected to Firebase emulators');
-  } catch (error) {
-    console.log('Emulators not available, using production Firebase:', error.message);
-  }
-}
-
 // VAPID key for push notifications
-const VAPID_KEY = process.env.REACT_APP_FIREBASE_VAPID_KEY || "your-vapid-key";
+const VAPID_KEY = process.env.REACT_APP_FIREBASE_VAPID_KEY;
 
 // Request permission for notifications
 export const requestNotificationPermission = async () => {
@@ -128,8 +109,6 @@ export const subscribeToRole = async (role) => {
   }
   
   try {
-    // This would typically be handled by your backend
-    // when the user logs in and their FCM token is sent to the server
     console.log(`Subscribed to role topic: role_${role.toLowerCase()}`);
   } catch (error) {
     console.error('Error subscribing to role topic:', error);
