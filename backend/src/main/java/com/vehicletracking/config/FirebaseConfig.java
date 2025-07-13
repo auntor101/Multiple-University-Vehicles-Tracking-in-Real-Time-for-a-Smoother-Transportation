@@ -24,16 +24,16 @@ public class FirebaseConfig {
     
     private static final Logger logger = LoggerFactory.getLogger(FirebaseConfig.class);
     
-    @Value("${firebase.database.url:https://vehicle-tracking-dev-default-rtdb.firebaseio.com/}")
+    @Value("${firebase.database.url}")
     private String databaseUrl;
     
-    @Value("${firebase.storage.bucket:vehicle-tracking-dev.appspot.com}")
+    @Value("${firebase.storage.bucket}")
     private String storageBucket;
     
-    @Value("${firebase.project.id:vehicle-tracking-dev}")
+    @Value("${firebase.project.id}")
     private String projectId;
     
-    @Value("${firebase.service.account.key.path:firebase-service-account.json}")
+    @Value("${firebase.service.account.key.path}")
     private String serviceAccountKeyPath;
     
     @PostConstruct
@@ -67,45 +67,15 @@ public class FirebaseConfig {
     }
     
     private InputStream getServiceAccountStream() throws IOException {
-        try {
-            // Try to load from classpath first
-            ClassPathResource resource = new ClassPathResource(serviceAccountKeyPath);
-            if (resource.exists() && resource.isReadable()) {
-                logger.info("Loading Firebase service account from classpath: {}", serviceAccountKeyPath);
-                return resource.getInputStream();
-            }
-        } catch (Exception e) {
-            logger.warn("Could not load service account from classpath: {}", e.getMessage());
-        }
-        
-        // Fallback: Try to load from environment variables
-        String privateKeyId = System.getenv("FIREBASE_PRIVATE_KEY_ID");
-        String privateKey = System.getenv("FIREBASE_PRIVATE_KEY");
-        String clientEmail = System.getenv("FIREBASE_CLIENT_EMAIL");
-        String clientId = System.getenv("FIREBASE_CLIENT_ID");
-        
-        if (privateKey != null && clientEmail != null) {
-            // Create service account JSON from environment variables
-            String serviceAccountJson = String.format(
-                "{" +
-                "\"type\": \"service_account\"," +
-                "\"project_id\": \"%s\"," +
-                "\"private_key_id\": \"%s\"," +
-                "\"private_key\": \"%s\"," +
-                "\"client_email\": \"%s\"," +
-                "\"client_id\": \"%s\"," +
-                "\"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\"," +
-                "\"token_uri\": \"https://oauth2.googleapis.com/token\"" +
-                "}",
-                projectId, privateKeyId, privateKey.replace("\\n", "\n"), 
-                clientEmail, clientId
-            );
-            
-            return new java.io.ByteArrayInputStream(serviceAccountJson.getBytes());
+        // Load from classpath for local development
+        ClassPathResource resource = new ClassPathResource(serviceAccountKeyPath);
+        if (resource.exists() && resource.isReadable()) {
+            logger.info("Loading Firebase service account from classpath: {}", serviceAccountKeyPath);
+            return resource.getInputStream();
         }
         
         throw new IOException("Firebase service account configuration not found. " +
-            "Please provide firebase-service-account.json or set environment variables.");
+            "Please provide firebase-service-account.json in src/main/resources/");
     }
     
     @Bean
