@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Container, Typography, Button } from '@mui/material';
 import { Toaster } from 'react-hot-toast';
 
 // Components
@@ -13,6 +14,7 @@ import DriverDashboard from './components/driver/DriverDashboard';
 import VehicleTracking from './components/tracking/VehicleTracking';
 import Chat from './components/chat/Chat';
 import Announcements from './components/announcements/Announcements';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 // Context
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -125,8 +127,20 @@ function AppContent() {
             } 
           />
           
-          <Route path="/unauthorized" element={<div>Unauthorized Access</div>} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/unauthorized" element={
+            <Container maxWidth="sm" sx={{ mt: 8, textAlign: 'center' }}>
+              <Typography variant="h4" gutterBottom color="error">
+                Access Denied
+              </Typography>
+              <Typography variant="body1" paragraph>
+                You don't have permission to access this resource.
+              </Typography>
+              <Button variant="contained" onClick={() => window.history.back()}>
+                Go Back
+              </Button>
+            </Container>
+          } />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Toaster position="top-right" />
       </div>
@@ -136,12 +150,14 @@ function AppContent() {
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -41,12 +41,80 @@ const VehicleTracking = () => {
   const fetchVehicles = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/tracking/vehicles');
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+      const response = await axios.get(`${API_BASE_URL}/tracking/vehicles`);
       setVehicles(response.data);
       setError('');
     } catch (err) {
       setError('Failed to fetch vehicle data');
       console.error('Error fetching vehicles:', err);
+      // Mock data for development/demo
+      setVehicles([
+        {
+          id: 1,
+          vehicleNumber: 'UNI-001',
+          brand: 'Mercedes',
+          model: 'Sprinter',
+          vehicleType: 'STUDENT_BUS',
+          status: 'ACTIVE',
+          driverName: 'John Doe',
+          driverPhone: '+1-555-0101',
+          currentLatitude: 40.7128,
+          currentLongitude: -74.0060,
+          currentSpeed: 25,
+          fuelLevel: 75,
+          direction: 'Northeast',
+          lastLocationUpdate: new Date().toISOString()
+        },
+        {
+          id: 2,
+          vehicleNumber: 'UNI-002',
+          brand: 'Toyota',
+          model: 'Hiace',
+          vehicleType: 'TEACHER_BUS',
+          status: 'MAINTENANCE',
+          driverName: null,
+          driverPhone: null,
+          currentLatitude: null,
+          currentLongitude: null,
+          currentSpeed: 0,
+          fuelLevel: 45,
+          direction: null,
+          lastLocationUpdate: new Date(Date.now() - 3600000).toISOString()
+        },
+        {
+          id: 3,
+          vehicleNumber: 'UNI-003',
+          brand: 'Ford',
+          model: 'Transit',
+          vehicleType: 'GENERAL_TRANSPORT',
+          status: 'ACTIVE',
+          driverName: 'Jane Smith',
+          driverPhone: '+1-555-0102',
+          currentLatitude: 40.7589,
+          currentLongitude: -73.9851,
+          currentSpeed: 35,
+          fuelLevel: 92,
+          direction: 'South',
+          lastLocationUpdate: new Date(Date.now() - 300000).toISOString()
+        },
+        {
+          id: 4,
+          vehicleNumber: 'UNI-004',
+          brand: 'Chevrolet',
+          model: 'Express',
+          vehicleType: 'OFFICE_ADMIN_VEHICLE',
+          status: 'ACTIVE',
+          driverName: 'Mike Johnson',
+          driverPhone: '+1-555-0103',
+          currentLatitude: 40.7505,
+          currentLongitude: -73.9934,
+          currentSpeed: 0,
+          fuelLevel: 68,
+          direction: 'Stationary',
+          lastLocationUpdate: new Date(Date.now() - 120000).toISOString()
+        }
+      ]);
     } finally {
       setLoading(false);
     }

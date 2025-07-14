@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -7,12 +7,13 @@ import {
   Grid,
   Card,
   CardContent,
-  Button,
   Box,
   Avatar,
   Menu,
   MenuItem,
-  IconButton
+  IconButton,
+  Alert,
+  CircularProgress
 } from '@mui/material';
 import {
   DirectionsBus,
@@ -20,15 +21,52 @@ import {
   LocationOn,
   Announcement,
   AccountCircle,
-  ExitToApp
+  ExitToApp,
+  Refresh
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [stats, setStats] = useState({
+    activeVehicles: 0,
+    onlineDrivers: 0,
+    activeUsers: 0,
+    totalTrips: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+
+  useEffect(() => {
+    fetchDashboardStats();
+    const interval = setInterval(fetchDashboardStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/dashboard/stats`);
+      setStats(response.data);
+      setError('');
+    } catch (err) {
+      setError('Failed to fetch dashboard statistics');
+      console.error('Error fetching stats:', err);
+      setStats({
+        activeVehicles: 12,
+        onlineDrivers: 8,
+        activeUsers: 145,
+        totalTrips: 234
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -68,7 +106,6 @@ const Dashboard = () => {
     }
   ];
 
-  // Add role-specific features
   if (user?.role === 'ADMIN' || user?.role === 'DRIVER') {
     features.push({
       title: 'Announcements',
@@ -91,6 +128,14 @@ const Dashboard = () => {
             <Typography variant="body2" sx={{ mr: 2 }}>
               {user?.username} ({user?.role})
             </Typography>
+            <IconButton
+              color="inherit"
+              onClick={fetchDashboardStats}
+              disabled={loading}
+              sx={{ mr: 1 }}
+            >
+              <Refresh />
+            </IconButton>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -126,6 +171,12 @@ const Dashboard = () => {
       </AppBar>
 
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        {error && (
+          <Alert severity="warning" sx={{ mb: 3 }}>
+            {error}
+          </Alert>
+        )}
+
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Card>
@@ -188,35 +239,46 @@ const Dashboard = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Quick Stats
+                {loading && <CircularProgress size={20} sx={{ ml: 2 }} />}
               </Typography>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={3}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h4" color="primary">
-                      12
+                      {stats.activeVehicles}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Active Vehicles
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={3}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h4" color="success.main">
-                      8
+                      {stats.onlineDrivers}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Online Drivers
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={3}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h4" color="warning.main">
-                      145
+                      {stats.activeUsers}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Active Users
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={3}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="h4" color="info.main">
+                      {stats.totalTrips}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Total Trips Today
                     </Typography>
                   </Box>
                 </Grid>
