@@ -2,16 +2,13 @@ package com.vehicletracking.repository;
 
 import com.vehicletracking.model.Role;
 import com.vehicletracking.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository {
     
     Optional<User> findByUsername(String username);
     
@@ -29,16 +26,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     List<User> findByIsActive(Boolean isActive);
     
+    User save(User user);
+    
+    Optional<User> findById(String id);
+    
+    void deleteById(String id);
+    
+    List<User> findAll();
+    
     List<User> findByRoleAndIsActive(Role role, Boolean isActive);
     
-    @Query("SELECT u FROM User u WHERE u.role IN :roles")
-    List<User> findByRoles(@Param("roles") List<Role> roles);
+    List<User> findByRoles(List<Role> roles);
     
-    @Query("SELECT u FROM User u WHERE u.university = :university AND u.role IN :roles AND u.isActive = true")
-    List<User> findActiveUsersByUniversityAndRoles(@Param("university") String university, @Param("roles") List<Role> roles);
+    List<User> findActiveUsersByUniversityAndRoles(String university, List<Role> roles);
     
-    @Query("SELECT u FROM User u WHERE u.firstName LIKE %:searchTerm% OR u.lastName LIKE %:searchTerm% OR u.email LIKE %:searchTerm% OR u.username LIKE %:searchTerm%")
-    List<User> searchUsers(@Param("searchTerm") String searchTerm);
+    List<User> searchUsers(String searchTerm);
     
     Optional<User> findByStudentId(String studentId);
     
@@ -46,6 +48,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     Optional<User> findByLicenseNumber(String licenseNumber);
     
-    @Query("SELECT COUNT(u) FROM User u WHERE u.university = :university AND u.role = :role")
-    Long countUsersByUniversityAndRole(@Param("university") String university, @Param("role") Role role);
+    Long countUsersByUniversityAndRole(String university, Role role);
 } 

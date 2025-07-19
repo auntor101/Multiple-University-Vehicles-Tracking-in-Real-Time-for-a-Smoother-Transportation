@@ -1,100 +1,76 @@
 package com.vehicletracking.model;
 
 import com.vehicletracking.config.SecurityConstants;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
 public class User {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // Firebase uses String IDs
     
     @NotBlank(message = "Username is required")
     @Size(min = SecurityConstants.MIN_USERNAME_LENGTH, max = SecurityConstants.MAX_USERNAME_LENGTH, 
           message = "Username must be between 3 and 50 characters")
     @Pattern(regexp = SecurityConstants.USERNAME_PATTERN, 
              message = "Username can only contain letters, numbers, dots, underscores, and hyphens")
-    @Column(unique = true, nullable = false, length = 50)
     private String username;
     
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
     @Pattern(regexp = SecurityConstants.EMAIL_PATTERN, message = "Invalid email format")
-    @Column(unique = true, nullable = false, length = 100)
     private String email;
     
     @NotBlank(message = "Password is required")
     @Size(min = SecurityConstants.MIN_PASSWORD_LENGTH, max = SecurityConstants.MAX_PASSWORD_LENGTH)
     @Pattern(regexp = SecurityConstants.PASSWORD_PATTERN, 
              message = "Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character")
-    @Column(nullable = false)
     private String password;
     
     @NotBlank(message = "First name is required")
     @Size(min = 1, max = 50, message = "First name must be between 1 and 50 characters")
-    @Column(nullable = false, length = 50)
     private String firstName;
     
     @NotBlank(message = "Last name is required")
     @Size(min = 1, max = 50, message = "Last name must be between 1 and 50 characters")
-    @Column(nullable = false, length = 50)
     private String lastName;
     
     @Pattern(regexp = SecurityConstants.PHONE_NUMBER_PATTERN, 
              message = "Phone number should be in international format")
-    @Column(length = 20)
     private String phoneNumber;
     
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private Role role;
     
     @Size(max = 100, message = "University name must not exceed 100 characters")
-    @Column(length = 100)
     private String university;
     
     @Size(max = 100, message = "Department name must not exceed 100 characters")
-    @Column(length = 100)
     private String department;
     
     @Size(max = 50, message = "Student ID must not exceed 50 characters")
-    @Column(length = 50, unique = true)
     private String studentId;
     
     @Size(max = 50, message = "Employee ID must not exceed 50 characters")
-    @Column(length = 50, unique = true)
     private String employeeId;
     
     @Size(max = 50, message = "License number must not exceed 50 characters")
-    @Column(length = 50, unique = true)
     private String licenseNumber;
     
-    @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
     
-    @Column(name = "is_email_verified", nullable = false)
     private Boolean isEmailVerified = false;
     
-    @Column(name = "last_login")
     private LocalDateTime lastLogin;
     
-    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
-    @PrePersist
+    
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
     
-    @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
@@ -103,11 +79,11 @@ public class User {
         return firstName + " " + lastName;
     }
     
-    public Long getId() {
+    public String getId() {
         return id;
     }
     
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     

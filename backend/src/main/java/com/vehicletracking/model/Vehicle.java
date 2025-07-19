@@ -1,110 +1,79 @@
 package com.vehicletracking.model;
 
 import com.vehicletracking.validation.ValidVehicleNumber;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "vehicles")
 public class Vehicle {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // Firebase uses String IDs
     
     @ValidVehicleNumber
-    @Column(unique = true, nullable = false, length = 10)
     private String vehicleNumber;
     
     @NotBlank(message = "Model is required")
     @Size(min = 2, max = 100, message = "Model must be between 2 and 100 characters")
-    @Column(nullable = false, length = 100)
     private String model;
     
     @NotBlank(message = "Brand is required")
     @Size(min = 2, max = 50, message = "Brand must be between 2 and 50 characters")
-    @Column(nullable = false, length = 50)
     private String brand;
     
     @NotNull(message = "Capacity is required")
     @Min(value = 1, message = "Capacity must be at least 1")
     @Max(value = 100, message = "Capacity cannot exceed 100")
-    @Column(nullable = false)
     private Integer capacity;
     
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
     private VehicleType vehicleType;
     
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private VehicleStatus status;
     
     @NotBlank(message = "University is required")
     @Size(min = 2, max = 100, message = "University name must be between 2 and 100 characters")
-    @Column(nullable = false, length = 100)
     private String university;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "driver_id")
-    private User driver;
+    private String driverId; // Reference to driver's ID instead of entity
     
-    @Column(name = "current_latitude")
     private Double currentLatitude;
     
-    @Column(name = "current_longitude")
     private Double currentLongitude;
     
-    @Column(name = "current_speed")
     private Double currentSpeed;
     
-    @Column(name = "direction", length = 50)
     private String direction;
     
-    @Column(name = "fuel_level")
     private Double fuelLevel;
     
-    @Column(name = "route_name", length = 100)
     private String routeName;
     
-    @Column(name = "route_description", length = 500)
     private String routeDescription;
     
-    @Column(name = "last_location_update")
     private LocalDateTime lastLocationUpdate;
     
-    @Column(name = "last_maintenance_date")
     private LocalDateTime lastMaintenanceDate;
     
-    @Column(name = "next_maintenance_date")
     private LocalDateTime nextMaintenanceDate;
     
-    @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
     
-    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
-    @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
     
-    @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
     
-    public Long getId() {
+    public String getId() {
         return id;
     }
     
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     
@@ -164,12 +133,12 @@ public class Vehicle {
         this.university = university;
     }
     
-    public User getDriver() {
-        return driver;
+    public String getDriverId() {
+        return driverId;
     }
     
-    public void setDriver(User driver) {
-        this.driver = driver;
+    public void setDriverId(String driverId) {
+        this.driverId = driverId;
     }
     
     public Double getCurrentLatitude() {
