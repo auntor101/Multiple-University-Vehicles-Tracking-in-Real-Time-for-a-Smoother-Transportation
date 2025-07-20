@@ -47,12 +47,12 @@ public class VehicleServiceImpl implements VehicleService {
                 .orElseThrow(() -> new UserNotFoundException(vehicleDto.getDriverId()));
             
             if (driver.getRole() != Role.DRIVER) {
-                throw DriverAssignmentException.notADriver(vehicleDto.getDriverId());
+                throw new RuntimeException("User is not a driver: " + vehicleDto.getDriverId());
             }
             
             // Check if driver is already assigned to another vehicle
-            if (vehicleRepository.findByDriverId(vehicleDto.getDriverId()).isPresent()) {
-                throw DriverAssignmentException.alreadyAssigned(vehicleDto.getDriverId());
+            if (!vehicleRepository.findByDriverId(vehicleDto.getDriverId()).isEmpty()) {
+                throw new RuntimeException("Driver is already assigned to another vehicle: " + vehicleDto.getDriverId());
             }
             
             vehicle.setDriver(driver);
@@ -63,7 +63,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public VehicleResponseDto updateVehicle(Long id, VehicleDto vehicleDto) {
+    public VehicleResponseDto updateVehicle(String id, VehicleDto vehicleDto) {
         Vehicle vehicle = vehicleRepository.findById(id)
             .orElseThrow(() -> new VehicleNotFoundException(id));
         
@@ -82,13 +82,13 @@ public class VehicleServiceImpl implements VehicleService {
                     .orElseThrow(() -> new UserNotFoundException(vehicleDto.getDriverId()));
                 
                 if (driver.getRole() != Role.DRIVER) {
-                    throw DriverAssignmentException.notADriver(vehicleDto.getDriverId());
+                    throw new RuntimeException("User is not a driver: " + vehicleDto.getDriverId());
                 }
                 
                 // Check if driver is already assigned to another vehicle
-                Optional<Vehicle> existingAssignment = vehicleRepository.findByDriverId(vehicleDto.getDriverId());
-                if (existingAssignment.isPresent() && !existingAssignment.get().getId().equals(id)) {
-                    throw DriverAssignmentException.alreadyAssigned(vehicleDto.getDriverId());
+                List<Vehicle> existingAssignments = vehicleRepository.findByDriverId(vehicleDto.getDriverId());
+                if (!existingAssignments.isEmpty() && !existingAssignments.get(0).getId().equals(id)) {
+                    throw new RuntimeException("Driver is already assigned to another vehicle: " + vehicleDto.getDriverId());
                 }
                 
                 vehicle.setDriver(driver);
@@ -102,7 +102,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public void deleteVehicle(Long id) {
+    public void deleteVehicle(String id) {
         Vehicle vehicle = vehicleRepository.findById(id)
             .orElseThrow(() -> new VehicleNotFoundException(id));
         
@@ -111,7 +111,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public Optional<VehicleResponseDto> getVehicleById(Long id) {
+    public Optional<VehicleResponseDto> getVehicleById(String id) {
         return vehicleRepository.findById(id)
             .filter(Vehicle::getIsActive)
             .map(this::mapEntityToResponseDto);
@@ -178,7 +178,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public VehicleResponseDto assignDriver(Long vehicleId, Long driverId) {
+    public VehicleResponseDto assignDriver(String vehicleId, String driverId) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
             .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + vehicleId));
         
@@ -190,7 +190,7 @@ public class VehicleServiceImpl implements VehicleService {
         }
         
         // Check if driver is already assigned to another vehicle
-        if (vehicleRepository.findByDriverId(driverId).isPresent()) {
+        if (!vehicleRepository.findByDriverId(driverId).isEmpty()) {
             throw new RuntimeException("Driver is already assigned to another vehicle");
         }
         
@@ -200,7 +200,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public VehicleResponseDto unassignDriver(Long vehicleId) {
+    public VehicleResponseDto unassignDriver(String vehicleId) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
             .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + vehicleId));
         
@@ -210,9 +210,11 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public Optional<VehicleResponseDto> getVehicleByDriverId(Long driverId) {
+    public Optional<VehicleResponseDto> getVehicleByDriverId(String driverId) {
         return vehicleRepository.findByDriverId(driverId)
+            .stream()
             .filter(Vehicle::getIsActive)
+            .findFirst()
             .map(this::mapEntityToResponseDto);
     }
     
@@ -233,7 +235,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public VehicleResponseDto updateVehicleLocation(Long vehicleId, LocationUpdateDto locationUpdate) {
+    public VehicleResponseDto updateVehicleLocation(String vehicleId, LocationUpdateDto locationUpdate) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
             .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + vehicleId));
         
@@ -258,7 +260,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
     
     @Override
-    public VehicleResponseDto updateVehicleStatus(Long vehicleId, VehicleStatus status) {
+    public VehicleResponseDto updateVehicleStatus(String vehicleId, VehicleStatus status) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
             .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + vehicleId));
         

@@ -1,50 +1,34 @@
 package com.vehicletracking.dto;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public class TripAnalytics {
     private Integer totalTrips;
-    private Double averageTripDistance;
-    private Double averageTripDuration;
-    private Map<String, Integer> tripsByRoute;
-    private Map<String, Integer> tripsByTimeOfDay;
-    private Integer onTimeTrips;
-    private Integer delayedTrips;
+    private Double averageDistance;
+    private Double averageDuration;
+    private Map<String, Long> tripsByStatus;
+    private Map<LocalDate, Long> tripsOverTime;
+    private List<String> popularRoutes;
     
-    // Constructors
     public TripAnalytics() {}
     
-    public TripAnalytics(Integer totalTrips, Double averageTripDistance, Double averageTripDuration,
-                        Map<String, Integer> tripsByRoute, Map<String, Integer> tripsByTimeOfDay,
-                        Integer onTimeTrips, Integer delayedTrips) {
-        this.totalTrips = totalTrips;
-        this.averageTripDistance = averageTripDistance;
-        this.averageTripDuration = averageTripDuration;
-        this.tripsByRoute = tripsByRoute;
-        this.tripsByTimeOfDay = tripsByTimeOfDay;
-        this.onTimeTrips = onTimeTrips;
-        this.delayedTrips = delayedTrips;
-    }
-    
-    // Getters and Setters
     public Integer getTotalTrips() { return totalTrips; }
     public void setTotalTrips(Integer totalTrips) { this.totalTrips = totalTrips; }
     
-    public Double getAverageTripDistance() { return averageTripDistance; }
-    public void setAverageTripDistance(Double averageTripDistance) { this.averageTripDistance = averageTripDistance; }
+    public Double getAverageDistance() { return averageDistance; }
+    public void setAverageDistance(Double averageDistance) { this.averageDistance = averageDistance; }
     
-    public Double getAverageTripDuration() { return averageTripDuration; }
-    public void setAverageTripDuration(Double averageTripDuration) { this.averageTripDuration = averageTripDuration; }
+    public Double getAverageDuration() { return averageDuration; }
+    public void setAverageDuration(Double averageDuration) { this.averageDuration = averageDuration; }
     
-    public Map<String, Integer> getTripsByRoute() { return tripsByRoute; }
-    public void setTripsByRoute(Map<String, Integer> tripsByRoute) { this.tripsByRoute = tripsByRoute; }
+    public Map<String, Long> getTripsByStatus() { return tripsByStatus; }
+    public void setTripsByStatus(Map<String, Long> tripsByStatus) { this.tripsByStatus = tripsByStatus; }
     
-    public Map<String, Integer> getTripsByTimeOfDay() { return tripsByTimeOfDay; }
-    public void setTripsByTimeOfDay(Map<String, Integer> tripsByTimeOfDay) { this.tripsByTimeOfDay = tripsByTimeOfDay; }
+    public Map<LocalDate, Long> getTripsOverTime() { return tripsOverTime; }
+    public void setTripsOverTime(Map<LocalDate, Long> tripsOverTime) { this.tripsOverTime = tripsOverTime; }
     
-    public Integer getOnTimeTrips() { return onTimeTrips; }
-    public void setOnTimeTrips(Integer onTimeTrips) { this.onTimeTrips = onTimeTrips; }
-    
-    public Integer getDelayedTrips() { return delayedTrips; }
-    public void setDelayedTrips(Integer delayedTrips) { this.delayedTrips = delayedTrips; }
+    public List<String> getPopularRoutes() { return popularRoutes; }
+    public void setPopularRoutes(List<String> popularRoutes) { this.popularRoutes = popularRoutes; }
 }

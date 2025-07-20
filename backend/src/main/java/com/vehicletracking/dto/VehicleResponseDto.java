@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class VehicleResponseDto {
     
-    private Long id;
+    private String id;
     private String vehicleNumber;
     private String model;
     private String brand;
@@ -16,7 +16,7 @@ public class VehicleResponseDto {
     private String university;
     
     // Driver information
-    private Long driverId;
+    private String driverId;
     private String driverName;
     private String driverPhone;
     
@@ -51,11 +51,11 @@ public class VehicleResponseDto {
     public VehicleResponseDto() {}
     
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
     
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     
@@ -115,11 +115,11 @@ public class VehicleResponseDto {
         this.university = university;
     }
     
-    public Long getDriverId() {
+    public String getDriverId() {
         return driverId;
     }
     
-    public void setDriverId(Long driverId) {
+    public void setDriverId(String driverId) {
         this.driverId = driverId;
     }
     

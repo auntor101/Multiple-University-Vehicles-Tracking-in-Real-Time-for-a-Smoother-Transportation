@@ -58,7 +58,7 @@ public class FirebaseDataService {
             if (userId == null) {
                 throw new RuntimeException("Failed to generate Firebase key");
             }
-            user.setId(Long.valueOf(userId.hashCode())); // Convert Firebase key to Long
+            user.setId(userId); // Use Firebase key directly as String
             
             Map<String, Object> userData = convertUserToMap(user);
             userData.put("createdAt", System.currentTimeMillis());
@@ -137,7 +137,7 @@ public class FirebaseDataService {
                 throw new RuntimeException("Failed to generate Firebase key");
             }
             Vehicle vehicle = convertDtoToVehicle(vehicleDto);
-            vehicle.setId(Long.valueOf(vehicleId.hashCode()));
+            vehicle.setId(vehicleId); // Use Firebase key directly as String
             
             Map<String, Object> vehicleData = convertVehicleToMap(vehicle);
             vehicleData.put("createdAt", System.currentTimeMillis());
@@ -276,7 +276,7 @@ public class FirebaseDataService {
         Map<String, Object> map = (Map<String, Object>) data;
         
         User user = new User();
-        user.setId(Long.valueOf(firebaseKey.hashCode()));
+        user.setId(firebaseKey); // Use Firebase key directly as String
         user.setEmail((String) map.get("email"));
         user.setUsername((String) map.get("username"));
         user.setFirstName((String) map.get("firstName"));
@@ -324,7 +324,7 @@ public class FirebaseDataService {
         Map<String, Object> map = (Map<String, Object>) data;
         
         Vehicle vehicle = new Vehicle();
-        vehicle.setId(Long.valueOf(firebaseKey.hashCode()));
+        vehicle.setId(firebaseKey); // Use Firebase key directly as String
         vehicle.setVehicleNumber((String) map.get("vehicleNumber"));
         vehicle.setModel((String) map.get("model"));
         vehicle.setBrand((String) map.get("brand"));

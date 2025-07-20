@@ -34,7 +34,7 @@ public class VehicleDto {
     @Size(max = 100)
     private String university;
     
-    private Long driverId;
+    private String driverId;
     
     @Size(max = 200)
     private String routeName;
@@ -117,11 +117,11 @@ public class VehicleDto {
         this.university = university;
     }
     
-    public Long getDriverId() {
+    public String getDriverId() {
         return driverId;
     }
     
-    public void setDriverId(Long driverId) {
+    public void setDriverId(String driverId) {
         this.driverId = driverId;
     }
     

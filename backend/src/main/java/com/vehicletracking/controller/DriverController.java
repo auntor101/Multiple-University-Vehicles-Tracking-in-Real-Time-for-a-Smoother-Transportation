@@ -68,7 +68,7 @@ public class DriverController {
                     .body(new MessageResponse("User not found"));
             }
             
-            Long driverId = userOpt.get().getId();
+            String driverId = userOpt.get().getId();
             return ResponseEntity.ok(vehicleService.getVehicleByDriverId(driverId));
             
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class DriverController {
      * Update vehicle location
      */
     @PostMapping("/vehicle/{vehicleId}/location")
-    public ResponseEntity<?> updateVehicleLocation(@PathVariable Long vehicleId,
+    public ResponseEntity<?> updateVehicleLocation(@PathVariable String vehicleId,
                                                   @Valid @RequestBody LocationUpdateDto locationUpdate,
                                                   Authentication authentication) {
         try {
@@ -94,7 +94,7 @@ public class DriverController {
             }
             
             // Verify driver is assigned to this vehicle
-            Long driverId = userOpt.get().getId();
+            String driverId = userOpt.get().getId();
             Optional<com.vehicletracking.dto.VehicleResponseDto> vehicleOpt = vehicleService.getVehicleByDriverId(driverId);
             
             if (vehicleOpt.isEmpty() || !vehicleOpt.get().getId().equals(vehicleId)) {
@@ -114,7 +114,7 @@ public class DriverController {
      * Get vehicle status
      */
     @GetMapping("/vehicle/{vehicleId}/status")
-    public ResponseEntity<?> getVehicleStatus(@PathVariable Long vehicleId,
+    public ResponseEntity<?> getVehicleStatus(@PathVariable String vehicleId,
                                             Authentication authentication) {
         try {
             String username = authentication.getName();
@@ -126,7 +126,7 @@ public class DriverController {
             }
             
             // Verify driver is assigned to this vehicle
-            Long driverId = userOpt.get().getId();
+            String driverId = userOpt.get().getId();
             Optional<com.vehicletracking.dto.VehicleResponseDto> vehicleOpt = vehicleService.getVehicleByDriverId(driverId);
             
             if (vehicleOpt.isEmpty() || !vehicleOpt.get().getId().equals(vehicleId)) {
@@ -180,7 +180,7 @@ public class DriverController {
                     .body(new MessageResponse("User not found"));
             }
             
-            Long userId = userOpt.get().getId();
+            String userId = userOpt.get().getId();
             return ResponseEntity.ok(userService.updateUser(userId, userDto));
             
         } catch (Exception e) {

@@ -15,6 +15,7 @@ C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-fo
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\validation\VehicleNumberValidator.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\dto\AnnouncementStats.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\dto\FleetPerformanceMetrics.java
+C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\dto\PerformanceMetrics.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\dto\UserResponseDto.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\config\FirebaseConfig.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\model\User.java
@@ -31,6 +32,7 @@ C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-fo
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\model\ChatMessage.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\service\impl\AnnouncementServiceImpl.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\security\AuthTokenFilter.java
+C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\dto\RecentTrip.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\controller\AnnouncementController.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\model\Role.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\model\Vehicle.java
@@ -51,6 +53,7 @@ C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-fo
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\config\WebSocketConfig.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\service\AnnouncementService.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\repository\UserRepository.java
+C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\dto\RecentActivity.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\service\DashboardService.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\controller\ChatController.java
 C:\Users\PC\New folder (2)\Multiple-University-Vehicles-Tracking-in-Real-Time-for-a-Smoother-Transportation\backend\src\main\java\com\vehicletracking\dto\SystemOverview.java

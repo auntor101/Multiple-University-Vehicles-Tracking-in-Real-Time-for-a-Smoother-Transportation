@@ -148,7 +148,7 @@ public class AdminController {
      * Update user status
      */
     @PutMapping("/users/{userId}/status")
-    public ResponseEntity<?> updateUserStatus(@PathVariable Long userId, 
+    public ResponseEntity<?> updateUserStatus(@PathVariable String userId, 
                                             @RequestParam boolean isActive) {
         try {
             return ResponseEntity.ok(userService.updateUserStatus(userId, isActive));
@@ -188,7 +188,7 @@ public class AdminController {
      * Delete user
      */
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
         try {
             userService.deleteUser(userId);
             return ResponseEntity.ok(new MessageResponse("User deleted successfully"));
@@ -202,7 +202,7 @@ public class AdminController {
      * Delete vehicle
      */
     @DeleteMapping("/vehicles/{vehicleId}")
-    public ResponseEntity<?> deleteVehicle(@PathVariable Long vehicleId) {
+    public ResponseEntity<?> deleteVehicle(@PathVariable String vehicleId) {
         try {
             vehicleService.deleteVehicle(vehicleId);
             return ResponseEntity.ok(new MessageResponse("Vehicle deleted successfully"));

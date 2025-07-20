@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserPrincipal implements UserDetails {
-    private Long id;
+    private String id;
     private String username;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     
-    public UserPrincipal(Long id, String username, String email, String password,
+    public UserPrincipal(String id, String username, String email, String password,
                          Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -40,7 +40,7 @@ public class UserPrincipal implements UserDetails {
         );
     }
     
-    public Long getId() {
+    public String getId() {
         return id;
     }
     

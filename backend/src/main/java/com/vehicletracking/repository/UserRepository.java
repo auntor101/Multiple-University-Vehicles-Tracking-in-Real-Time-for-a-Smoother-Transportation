@@ -49,4 +49,6 @@ public interface UserRepository {
     Optional<User> findByLicenseNumber(String licenseNumber);
     
     Long countUsersByUniversityAndRole(String university, Role role);
+    
+    long count();
 } 

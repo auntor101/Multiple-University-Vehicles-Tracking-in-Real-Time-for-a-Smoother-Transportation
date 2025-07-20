@@ -27,7 +27,7 @@ public class LocationTrackingController {
     @PostMapping("/location/{vehicleId}")
     @PreAuthorize("hasRole('DRIVER')")
     public ResponseEntity<?> updateVehicleLocation(
-            @PathVariable Long vehicleId,
+            @PathVariable String vehicleId,
             @Valid @RequestBody LocationUpdateDto locationUpdate,
             Authentication authentication) {
         
@@ -108,7 +108,7 @@ public class LocationTrackingController {
     
     // Get Specific Vehicle Location by ID
     @GetMapping("/vehicle/{vehicleId}")
-    public ResponseEntity<?> getVehicleLocation(@PathVariable Long vehicleId) {
+    public ResponseEntity<?> getVehicleLocation(@PathVariable String vehicleId) {
         Optional<VehicleResponseDto> vehicle = vehicleService.getVehicleById(vehicleId);
         if (vehicle.isPresent()) {
             return ResponseEntity.ok(vehicle.get());

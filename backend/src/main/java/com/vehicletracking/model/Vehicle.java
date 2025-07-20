@@ -141,6 +141,18 @@ public class Vehicle {
         this.driverId = driverId;
     }
     
+    // Compatibility methods for legacy code that expects User objects
+    public User getDriver() {
+        if (driverId == null) return null;
+        User user = new User();
+        user.setId(driverId);
+        return user;
+    }
+    
+    public void setDriver(User driver) {
+        this.driverId = (driver != null) ? driver.getId() : null;
+    }
+    
     public Double getCurrentLatitude() {
         return currentLatitude;
     }

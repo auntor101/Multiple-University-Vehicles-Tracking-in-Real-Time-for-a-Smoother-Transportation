@@ -14,11 +14,11 @@ public interface VehicleService {
     // CRUD Operations
     VehicleResponseDto createVehicle(VehicleDto vehicleDto);
     
-    VehicleResponseDto updateVehicle(Long id, VehicleDto vehicleDto);
+    VehicleResponseDto updateVehicle(String id, VehicleDto vehicleDto);
     
-    void deleteVehicle(Long id);
+    void deleteVehicle(String id);
     
-    Optional<VehicleResponseDto> getVehicleById(Long id);
+    Optional<VehicleResponseDto> getVehicleById(String id);
     
     Optional<VehicleResponseDto> getVehicleByNumber(String vehicleNumber);
     
@@ -36,21 +36,21 @@ public interface VehicleService {
     List<VehicleResponseDto> searchVehicles(String searchTerm);
     
     // Driver Assignment
-    VehicleResponseDto assignDriver(Long vehicleId, Long driverId);
+    VehicleResponseDto assignDriver(String vehicleId, String driverId);
     
-    VehicleResponseDto unassignDriver(Long vehicleId);
+    VehicleResponseDto unassignDriver(String vehicleId);
     
-    Optional<VehicleResponseDto> getVehicleByDriverId(Long driverId);
+    Optional<VehicleResponseDto> getVehicleByDriverId(String driverId);
     
     // Location and Tracking
     List<VehicleResponseDto> getVehiclesWithLocation();
     
     List<VehicleResponseDto> getActiveVehiclesWithLocationByUniversity(String university);
     
-    VehicleResponseDto updateVehicleLocation(Long vehicleId, LocationUpdateDto locationUpdate);
+    VehicleResponseDto updateVehicleLocation(String vehicleId, LocationUpdateDto locationUpdate);
     
     // Status Management
-    VehicleResponseDto updateVehicleStatus(Long vehicleId, VehicleStatus status);
+    VehicleResponseDto updateVehicleStatus(String vehicleId, VehicleStatus status);
     
     List<VehicleResponseDto> getActiveVehicles();
     

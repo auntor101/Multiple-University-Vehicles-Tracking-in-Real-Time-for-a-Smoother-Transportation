@@ -1,39 +1,41 @@
 package com.vehicletracking.dto;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 public class VehicleUsageStats {
-    private Map<String, Integer> usageByType;
-    private Map<String, Double> utilizationRates;
-    private Double averageSpeed;
-    private Double totalDistanceCovered;
+    private String vehicleId;
+    private String vehicleName;
     private Integer totalTrips;
+    private Double totalDistance;
+    private Double totalFuelConsumption;
+    private Long totalPassengers;
+    private Double utilizationRate;
+    private Map<LocalDate, Long> dailyTrips;
     
-    // Constructors
     public VehicleUsageStats() {}
     
-    public VehicleUsageStats(Map<String, Integer> usageByType, Map<String, Double> utilizationRates,
-                            Double averageSpeed, Double totalDistanceCovered, Integer totalTrips) {
-        this.usageByType = usageByType;
-        this.utilizationRates = utilizationRates;
-        this.averageSpeed = averageSpeed;
-        this.totalDistanceCovered = totalDistanceCovered;
-        this.totalTrips = totalTrips;
-    }
+    public String getVehicleId() { return vehicleId; }
+    public void setVehicleId(String vehicleId) { this.vehicleId = vehicleId; }
     
-    // Getters and Setters
-    public Map<String, Integer> getUsageByType() { return usageByType; }
-    public void setUsageByType(Map<String, Integer> usageByType) { this.usageByType = usageByType; }
-    
-    public Map<String, Double> getUtilizationRates() { return utilizationRates; }
-    public void setUtilizationRates(Map<String, Double> utilizationRates) { this.utilizationRates = utilizationRates; }
-    
-    public Double getAverageSpeed() { return averageSpeed; }
-    public void setAverageSpeed(Double averageSpeed) { this.averageSpeed = averageSpeed; }
-    
-    public Double getTotalDistanceCovered() { return totalDistanceCovered; }
-    public void setTotalDistanceCovered(Double totalDistanceCovered) { this.totalDistanceCovered = totalDistanceCovered; }
+    public String getVehicleName() { return vehicleName; }
+    public void setVehicleName(String vehicleName) { this.vehicleName = vehicleName; }
     
     public Integer getTotalTrips() { return totalTrips; }
     public void setTotalTrips(Integer totalTrips) { this.totalTrips = totalTrips; }
+    
+    public Double getTotalDistance() { return totalDistance; }
+    public void setTotalDistance(Double totalDistance) { this.totalDistance = totalDistance; }
+    
+    public Double getTotalFuelConsumption() { return totalFuelConsumption; }
+    public void setTotalFuelConsumption(Double totalFuelConsumption) { this.totalFuelConsumption = totalFuelConsumption; }
+    
+    public Long getTotalPassengers() { return totalPassengers; }
+    public void setTotalPassengers(Long totalPassengers) { this.totalPassengers = totalPassengers; }
+    
+    public Double getUtilizationRate() { return utilizationRate; }
+    public void setUtilizationRate(Double utilizationRate) { this.utilizationRate = utilizationRate; }
+    
+    public Map<LocalDate, Long> getDailyTrips() { return dailyTrips; }
+    public void setDailyTrips(Map<LocalDate, Long> dailyTrips) { this.dailyTrips = dailyTrips; }
 }

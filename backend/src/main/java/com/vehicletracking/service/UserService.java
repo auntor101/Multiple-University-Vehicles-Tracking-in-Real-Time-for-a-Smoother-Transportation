@@ -18,17 +18,17 @@ public interface UserService {
     /**
      * Update user details
      */
-    UserResponseDto updateUser(Long id, UserRegistrationDto userDto);
+    UserResponseDto updateUser(String id, UserRegistrationDto userDto);
     
     /**
      * Delete user
      */
-    void deleteUser(Long id);
+    void deleteUser(String id);
     
     /**
      * Find user by ID
      */
-    Optional<User> findById(Long id);
+    Optional<User> findById(String id);
     
     /**
      * Find user by username
@@ -78,7 +78,7 @@ public interface UserService {
     /**
      * Update user status
      */
-    UserResponseDto updateUserStatus(Long userId, boolean isActive);
+    UserResponseDto updateUserStatus(String userId, boolean isActive);
     
     /**
      * Reset user password
@@ -88,7 +88,7 @@ public interface UserService {
     /**
      * Change user password
      */
-    void changePassword(Long userId, String currentPassword, String newPassword);
+    void changePassword(String userId, String currentPassword, String newPassword);
 }
 
 class UserStats {

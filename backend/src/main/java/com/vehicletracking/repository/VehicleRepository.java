@@ -51,4 +51,6 @@ public interface VehicleRepository {
     void deleteById(String id);
     
     List<Vehicle> findAll();
+    
+    long count();
 } 

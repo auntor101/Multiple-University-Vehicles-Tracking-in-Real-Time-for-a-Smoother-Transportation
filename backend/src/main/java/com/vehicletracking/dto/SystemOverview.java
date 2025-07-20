@@ -1,42 +1,28 @@
 package com.vehicletracking.dto;
 
+import java.util.Map;
+
 public class SystemOverview {
     private String systemStatus;
-    private Integer totalActiveUsers;
-    private Integer totalActiveVehicles;
-    private Long uptime;
-    private Double systemLoad;
-    private String lastUpdate;
+    private Long activeConnections;
+    private Double serverUptime;
+    private Long totalDataProcessed;
+    private Map<String, Object> systemHealth;
     
-    // Constructors
     public SystemOverview() {}
     
-    public SystemOverview(String systemStatus, Integer totalActiveUsers, Integer totalActiveVehicles,
-                         Long uptime, Double systemLoad, String lastUpdate) {
-        this.systemStatus = systemStatus;
-        this.totalActiveUsers = totalActiveUsers;
-        this.totalActiveVehicles = totalActiveVehicles;
-        this.uptime = uptime;
-        this.systemLoad = systemLoad;
-        this.lastUpdate = lastUpdate;
-    }
-    
-    // Getters and Setters
     public String getSystemStatus() { return systemStatus; }
     public void setSystemStatus(String systemStatus) { this.systemStatus = systemStatus; }
     
-    public Integer getTotalActiveUsers() { return totalActiveUsers; }
-    public void setTotalActiveUsers(Integer totalActiveUsers) { this.totalActiveUsers = totalActiveUsers; }
+    public Long getActiveConnections() { return activeConnections; }
+    public void setActiveConnections(Long activeConnections) { this.activeConnections = activeConnections; }
     
-    public Integer getTotalActiveVehicles() { return totalActiveVehicles; }
-    public void setTotalActiveVehicles(Integer totalActiveVehicles) { this.totalActiveVehicles = totalActiveVehicles; }
+    public Double getServerUptime() { return serverUptime; }
+    public void setServerUptime(Double serverUptime) { this.serverUptime = serverUptime; }
     
-    public Long getUptime() { return uptime; }
-    public void setUptime(Long uptime) { this.uptime = uptime; }
+    public Long getTotalDataProcessed() { return totalDataProcessed; }
+    public void setTotalDataProcessed(Long totalDataProcessed) { this.totalDataProcessed = totalDataProcessed; }
     
-    public Double getSystemLoad() { return systemLoad; }
-    public void setSystemLoad(Double systemLoad) { this.systemLoad = systemLoad; }
-    
-    public String getLastUpdate() { return lastUpdate; }
-    public void setLastUpdate(String lastUpdate) { this.lastUpdate = lastUpdate; }
+    public Map<String, Object> getSystemHealth() { return systemHealth; }
+    public void setSystemHealth(Map<String, Object> systemHealth) { this.systemHealth = systemHealth; }
 }

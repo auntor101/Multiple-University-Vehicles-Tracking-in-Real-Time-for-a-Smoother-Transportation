@@ -36,7 +36,7 @@ public class FirebaseVehicleController {
     // Create Vehicle (Admin only)
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public CompletableFuture<ResponseEntity<?>> createVehicle(@Valid @RequestBody VehicleDto vehicleDto) {
+    public CompletableFuture<ResponseEntity<Object>> createVehicle(@Valid @RequestBody VehicleDto vehicleDto) {
         return firebaseDataService.createVehicle(vehicleDto)
             .thenApply(vehicle -> {
                 logger.info("Vehicle created successfully: {}", vehicle.getVehicleNumber());
@@ -53,7 +53,7 @@ public class FirebaseVehicleController {
                     data
                 );
                 
-                return ResponseEntity.ok(vehicle);
+                return ResponseEntity.<Object>ok(vehicle);
             })
             .exceptionally(throwable -> {
                 logger.error("Failed to create vehicle: {}", throwable.getMessage());
@@ -93,7 +93,7 @@ public class FirebaseVehicleController {
     // Update Vehicle Location (Driver only for their assigned vehicle)
     @PostMapping("/{vehicleId}/location")
     @PreAuthorize("hasRole('DRIVER')")
-    public CompletableFuture<ResponseEntity<?>> updateVehicleLocation(
+    public CompletableFuture<ResponseEntity<Object>> updateVehicleLocation(
             @PathVariable String vehicleId,
             @Valid @RequestBody LocationUpdateDto locationUpdate) {
         
@@ -118,7 +118,7 @@ public class FirebaseVehicleController {
                     );
                 }
                 
-                return ResponseEntity.ok(vehicle);
+                return ResponseEntity.<Object>ok(vehicle);
             })
             .exceptionally(throwable -> {
                 logger.error("Failed to update vehicle location: {}", throwable.getMessage());
@@ -130,7 +130,7 @@ public class FirebaseVehicleController {
     // Send Emergency Alert
     @PostMapping("/{vehicleId}/emergency")
     @PreAuthorize("hasRole('DRIVER')")
-    public CompletableFuture<ResponseEntity<?>> sendEmergencyAlert(
+    public CompletableFuture<ResponseEntity<MessageResponse>> sendEmergencyAlert(
             @PathVariable String vehicleId,
             @RequestBody Map<String, String> emergencyData) {
         
@@ -212,7 +212,7 @@ public class FirebaseVehicleController {
     // Send Vehicle Arrival Notification
     @PostMapping("/{vehicleId}/arrival")
     @PreAuthorize("hasRole('DRIVER')")
-    public CompletableFuture<ResponseEntity<?>> notifyVehicleArrival(
+    public CompletableFuture<ResponseEntity<MessageResponse>> notifyVehicleArrival(
             @PathVariable String vehicleId,
             @RequestBody Map<String, String> arrivalData) {
         

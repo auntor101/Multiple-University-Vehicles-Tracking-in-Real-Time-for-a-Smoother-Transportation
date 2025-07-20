@@ -3,37 +3,26 @@ package com.vehicletracking.dto;
 import java.util.Map;
 
 public class FleetPerformanceMetrics {
-    private Double averageFuelEfficiency;
-    private Map<String, Double> maintenanceCosts;
-    private Double totalOperatingCost;
-    private Integer vehiclesInMaintenance;
-    private Double fleetUtilization;
+    private Double averageSpeed;
+    private Double fuelEfficiency;
+    private Double onTimePerformance;
+    private Long maintenanceAlerts;
+    private Map<String, Double> performanceByVehicle;
     
-    // Constructors
     public FleetPerformanceMetrics() {}
     
-    public FleetPerformanceMetrics(Double averageFuelEfficiency, Map<String, Double> maintenanceCosts,
-                                  Double totalOperatingCost, Integer vehiclesInMaintenance, Double fleetUtilization) {
-        this.averageFuelEfficiency = averageFuelEfficiency;
-        this.maintenanceCosts = maintenanceCosts;
-        this.totalOperatingCost = totalOperatingCost;
-        this.vehiclesInMaintenance = vehiclesInMaintenance;
-        this.fleetUtilization = fleetUtilization;
-    }
+    public Double getAverageSpeed() { return averageSpeed; }
+    public void setAverageSpeed(Double averageSpeed) { this.averageSpeed = averageSpeed; }
     
-    // Getters and Setters
-    public Double getAverageFuelEfficiency() { return averageFuelEfficiency; }
-    public void setAverageFuelEfficiency(Double averageFuelEfficiency) { this.averageFuelEfficiency = averageFuelEfficiency; }
+    public Double getFuelEfficiency() { return fuelEfficiency; }
+    public void setFuelEfficiency(Double fuelEfficiency) { this.fuelEfficiency = fuelEfficiency; }
     
-    public Map<String, Double> getMaintenanceCosts() { return maintenanceCosts; }
-    public void setMaintenanceCosts(Map<String, Double> maintenanceCosts) { this.maintenanceCosts = maintenanceCosts; }
+    public Double getOnTimePerformance() { return onTimePerformance; }
+    public void setOnTimePerformance(Double onTimePerformance) { this.onTimePerformance = onTimePerformance; }
     
-    public Double getTotalOperatingCost() { return totalOperatingCost; }
-    public void setTotalOperatingCost(Double totalOperatingCost) { this.totalOperatingCost = totalOperatingCost; }
+    public Long getMaintenanceAlerts() { return maintenanceAlerts; }
+    public void setMaintenanceAlerts(Long maintenanceAlerts) { this.maintenanceAlerts = maintenanceAlerts; }
     
-    public Integer getVehiclesInMaintenance() { return vehiclesInMaintenance; }
-    public void setVehiclesInMaintenance(Integer vehiclesInMaintenance) { this.vehiclesInMaintenance = vehiclesInMaintenance; }
-    
-    public Double getFleetUtilization() { return fleetUtilization; }
-    public void setFleetUtilization(Double fleetUtilization) { this.fleetUtilization = fleetUtilization; }
+    public Map<String, Double> getPerformanceByVehicle() { return performanceByVehicle; }
+    public void setPerformanceByVehicle(Map<String, Double> performanceByVehicle) { this.performanceByVehicle = performanceByVehicle; }
 }

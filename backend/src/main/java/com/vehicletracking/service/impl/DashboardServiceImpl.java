@@ -3,7 +3,6 @@ package com.vehicletracking.service.impl;
 import com.vehicletracking.dto.*;
 import com.vehicletracking.model.Role;
 import com.vehicletracking.service.DashboardService;
-import com.vehicletracking.service.DashboardService.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -56,7 +55,7 @@ public class DashboardServiceImpl implements DashboardService {
         
         // Mock data - in production, fetch from database based on driverId
         stats.setTotalTripsCompleted(45L);
-        stats.setTripsToday(3L);
+        stats.setTripsToday(3);
         stats.setTotalDistanceDriven(1250.0);
         stats.setAverageTripDuration(25.5);
         stats.setCurrentVehicle("Bus #7");
@@ -100,7 +99,7 @@ public class DashboardServiceImpl implements DashboardService {
         // Mock data - in production, calculate from actual data
         stats.setVehicleId(vehicleId);
         stats.setVehicleName("University Bus #" + vehicleId);
-        stats.setTotalTrips(28L);
+        stats.setTotalTrips(28);
         stats.setTotalDistance(850.0);
         stats.setTotalFuelConsumption(120.5);
         stats.setTotalPassengers(420L);
@@ -161,7 +160,7 @@ public class DashboardServiceImpl implements DashboardService {
         UserActivityStats stats = new UserActivityStats();
         
         stats.setActiveUsers(85L);
-        stats.setNewRegistrations(12L);
+        stats.setNewRegistrations(12);
         
         Map<String, Long> activityByHour = new HashMap<>();
         for (int i = 6; i <= 22; i++) {
@@ -179,7 +178,7 @@ public class DashboardServiceImpl implements DashboardService {
     public TripAnalytics getTripAnalytics(LocalDate startDate, LocalDate endDate) {
         TripAnalytics analytics = new TripAnalytics();
         
-        analytics.setTotalTrips(156L);
+        analytics.setTotalTrips(156);
         analytics.setAverageDistance(12.5);
         analytics.setAverageDuration(22.3);
         

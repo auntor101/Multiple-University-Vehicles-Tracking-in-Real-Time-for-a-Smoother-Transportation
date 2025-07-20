@@ -79,7 +79,7 @@ public class UserController {
     // Get User by ID
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.id == #id")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    public ResponseEntity<?> getUserById(@PathVariable String id) {
         return userRepository.findById(id)
             .map(user -> ResponseEntity.ok(mapUserToResponseDto(user)))
             .orElse(ResponseEntity.notFound().build());
@@ -88,7 +88,7 @@ public class UserController {
     // Update User Status (Admin only)
     @PutMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateUserStatus(@PathVariable Long id, @RequestParam Boolean isActive) {
+    public ResponseEntity<?> updateUserStatus(@PathVariable String id, @RequestParam Boolean isActive) {
         return userRepository.findById(id)
             .map(user -> {
                 user.setIsActive(isActive);

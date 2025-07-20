@@ -37,7 +37,7 @@ public class VehicleController {
     // Update Vehicle (Admin only)
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> updateVehicle(@PathVariable Long id, @Valid @RequestBody VehicleDto vehicleDto) {
+    public ResponseEntity<?> updateVehicle(@PathVariable String id, @Valid @RequestBody VehicleDto vehicleDto) {
         try {
             VehicleResponseDto response = vehicleService.updateVehicle(id, vehicleDto);
             return ResponseEntity.ok(response);
@@ -49,7 +49,7 @@ public class VehicleController {
     // Delete Vehicle (Admin only)
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> deleteVehicle(@PathVariable Long id) {
+    public ResponseEntity<?> deleteVehicle(@PathVariable String id) {
         try {
             vehicleService.deleteVehicle(id);
             return ResponseEntity.ok(new MessageResponse("Vehicle deleted successfully"));
@@ -60,7 +60,7 @@ public class VehicleController {
     
     // Get Vehicle by ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> getVehicleById(@PathVariable Long id) {
+    public ResponseEntity<?> getVehicleById(@PathVariable String id) {
         Optional<VehicleResponseDto> vehicle = vehicleService.getVehicleById(id);
         if (vehicle.isPresent()) {
             return ResponseEntity.ok(vehicle.get());
@@ -126,7 +126,7 @@ public class VehicleController {
     // Assign Driver (Admin only)
     @PostMapping("/{vehicleId}/assign-driver/{driverId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> assignDriver(@PathVariable Long vehicleId, @PathVariable Long driverId) {
+    public ResponseEntity<?> assignDriver(@PathVariable String vehicleId, @PathVariable String driverId) {
         try {
             VehicleResponseDto response = vehicleService.assignDriver(vehicleId, driverId);
             return ResponseEntity.ok(response);
@@ -138,7 +138,7 @@ public class VehicleController {
     // Unassign Driver (Admin only)
     @PostMapping("/{vehicleId}/unassign-driver")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> unassignDriver(@PathVariable Long vehicleId) {
+    public ResponseEntity<?> unassignDriver(@PathVariable String vehicleId) {
         try {
             VehicleResponseDto response = vehicleService.unassignDriver(vehicleId);
             return ResponseEntity.ok(response);
@@ -149,7 +149,7 @@ public class VehicleController {
     
     // Get Vehicle by Driver ID
     @GetMapping("/driver/{driverId}")
-    public ResponseEntity<?> getVehicleByDriverId(@PathVariable Long driverId) {
+    public ResponseEntity<?> getVehicleByDriverId(@PathVariable String driverId) {
         Optional<VehicleResponseDto> vehicle = vehicleService.getVehicleByDriverId(driverId);
         if (vehicle.isPresent()) {
             return ResponseEntity.ok(vehicle.get());
@@ -175,7 +175,7 @@ public class VehicleController {
     // Update Vehicle Status (Admin and Driver for their own vehicle)
     @PutMapping("/{vehicleId}/status")
     @PreAuthorize("hasRole('ADMIN') or (hasRole('DRIVER') and @vehicleService.getVehicleByDriverId(authentication.principal.id).isPresent() and @vehicleService.getVehicleByDriverId(authentication.principal.id).get().id == #vehicleId)")
-    public ResponseEntity<?> updateVehicleStatus(@PathVariable Long vehicleId, @RequestBody VehicleStatus status) {
+    public ResponseEntity<?> updateVehicleStatus(@PathVariable String vehicleId, @RequestBody VehicleStatus status) {
         try {
             VehicleResponseDto response = vehicleService.updateVehicleStatus(vehicleId, status);
             return ResponseEntity.ok(response);

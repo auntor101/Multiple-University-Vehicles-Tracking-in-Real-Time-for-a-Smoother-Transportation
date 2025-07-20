@@ -1,5 +1,7 @@
 package com.vehicletracking.dto;
 
+import java.util.List;
+
 public class DriverDashboardStats {
     private String driverName;
     private String assignedVehicle;
@@ -9,8 +11,13 @@ public class DriverDashboardStats {
     private Integer passengersToday;
     private String lastTrip;
     private String nextScheduledTrip;
+    private Long totalTripsCompleted;
+    private Double totalDistanceDriven;
+    private Double averageTripDuration;
+    private String currentVehicle;
+    private List<RecentTrip> recentTrips;
+    private PerformanceMetrics performanceMetrics;
     
-    // Constructors
     public DriverDashboardStats() {}
     
     public DriverDashboardStats(String driverName, String assignedVehicle, String currentLocation,
@@ -26,7 +33,6 @@ public class DriverDashboardStats {
         this.nextScheduledTrip = nextScheduledTrip;
     }
     
-    // Getters and Setters
     public String getDriverName() { return driverName; }
     public void setDriverName(String driverName) { this.driverName = driverName; }
     
@@ -50,4 +56,22 @@ public class DriverDashboardStats {
     
     public String getNextScheduledTrip() { return nextScheduledTrip; }
     public void setNextScheduledTrip(String nextScheduledTrip) { this.nextScheduledTrip = nextScheduledTrip; }
+    
+    public Long getTotalTripsCompleted() { return totalTripsCompleted; }
+    public void setTotalTripsCompleted(Long totalTripsCompleted) { this.totalTripsCompleted = totalTripsCompleted; }
+    
+    public Double getTotalDistanceDriven() { return totalDistanceDriven; }
+    public void setTotalDistanceDriven(Double totalDistanceDriven) { this.totalDistanceDriven = totalDistanceDriven; }
+    
+    public Double getAverageTripDuration() { return averageTripDuration; }
+    public void setAverageTripDuration(Double averageTripDuration) { this.averageTripDuration = averageTripDuration; }
+    
+    public String getCurrentVehicle() { return currentVehicle; }
+    public void setCurrentVehicle(String currentVehicle) { this.currentVehicle = currentVehicle; }
+    
+    public List<RecentTrip> getRecentTrips() { return recentTrips; }
+    public void setRecentTrips(List<RecentTrip> recentTrips) { this.recentTrips = recentTrips; }
+    
+    public PerformanceMetrics getPerformanceMetrics() { return performanceMetrics; }
+    public void setPerformanceMetrics(PerformanceMetrics performanceMetrics) { this.performanceMetrics = performanceMetrics; }
 }
