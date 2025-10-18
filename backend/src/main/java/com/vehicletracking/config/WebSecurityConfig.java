@@ -75,8 +75,10 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
             );
         
-        // Fix H2 console frame issue
-        http.headers(headers -> headers.frameOptions().sameOrigin());
+        // Fix H2 console frame issue - Updated to non-deprecated API
+        http.headers(headers -> headers
+            .frameOptions(frameOptions -> frameOptions.sameOrigin())
+        );
         
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

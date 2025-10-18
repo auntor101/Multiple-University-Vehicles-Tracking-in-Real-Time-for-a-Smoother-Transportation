@@ -7,18 +7,55 @@ import { getStorage } from 'firebase/storage';
 
 // Firebase configuration object
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'demo-api-key',
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || 'localhost',
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL || 'http://localhost:9000',
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || 'demo-vehicle-tracking',
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || 'demo-vehicle-tracking.appspot.com',
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || '123456789',
+  appId: process.env.REACT_APP_FIREBASE_APP_ID || '1:123456789:web:abcdef123456',
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || 'G-MEASUREMENT'
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Connect to Firebase Emulator if in development
+if (process.env.REACT_APP_USE_FIREBASE_EMULATOR === 'true' || window.location.hostname === 'localhost') {
+  console.log('🔧 Using Firebase Emulator Suite');
+  
+  // Import emulator connection functions
+  const { connectAuthEmulator } = require('firebase/auth');
+  const { connectDatabaseEmulator } = require('firebase/database');
+  const { connectStorageEmulator } = require('firebase/storage');
+  
+  try {
+    // Connect Auth Emulator
+    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+    console.log('✅ Auth Emulator connected on port 9099');
+  } catch (e) {
+    console.log('Auth emulator already connected');
+  }
+  
+  try {
+    // Connect Database Emulator
+    connectDatabaseEmulator(database, 'localhost', 9000);
+    console.log('✅ Database Emulator connected on port 9000');
+  } catch (e) {
+    console.log('Database emulator already connected');
+  }
+  
+  try {
+    // Connect Storage Emulator
+    connectStorageEmulator(storage, 'localhost', 9199);
+    console.log('✅ Storage Emulator connected on port 9199');
+  } catch (e) {
+    console.log('Storage emulator already connected');
+  }
+  
+  console.log('🎉 Firebase Emulator Suite ready!');
+  console.log('📊 Emulator UI: http://localhost:4000');
+}
 
 // Initialize Firebase Authentication
 export const auth = getAuth(app);

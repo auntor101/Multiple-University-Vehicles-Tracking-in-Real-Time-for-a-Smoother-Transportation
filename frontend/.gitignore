@@ -1,0 +1,26 @@
+# React/Node.js
+
+# Dependencies
+node_modules/
+
+# Production build
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Testing
+/coverage
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Audit reports
+audit-report.json
+

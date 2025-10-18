@@ -65,6 +65,8 @@ dist/
 # Firebase service account (NEVER commit this!)
 **/firebase-service-account.json
 firebase-debug.log
+firestore-debug.log
+database-debug.log
 .firebase/
 
 # Application properties with secrets
@@ -196,3 +198,6 @@ vehicle-images/
 
 # Yarn Integrity file
 .yarn-integrity
+
+# NPM audit reports
+audit-report.json
